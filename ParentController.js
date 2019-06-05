@@ -37,7 +37,7 @@ export default class ParentController extends React.Component {
 
   saveData = async () => {
     try {
-      await AsyncStorage.setItem('terms', JSON.stringify(appState.terms));
+      await AsyncStorage.setItem('terms', JSON.stringify(this.state.terms));
     } catch (error) {
       console.log("Bad Save");
     }
@@ -45,23 +45,27 @@ export default class ParentController extends React.Component {
     console.log("Saved.");
   }
 
-  addMark = () => {
-
-  }
-
-  createCourse = (name, uoc) => {
-    let currentCourses = this.state.currentCourses;
-    let terms = this.state.terms;
-
-    currentCourses.push({name: name, uoc: uoc});
-    terms.CurrentTerm = currentCourses;
-
+  setSave = (terms, currentCourses) => {
     this.setState({
       terms: terms,
       currentCourses: currentCourses
     })
-    
+
     this.saveData();
+  }
+
+  addMark = () => {
+
+  }
+
+  createCourse = (name, uoc, icon) => {
+    let currentCourses = this.state.currentCourses;
+    let terms = this.state.terms;
+
+    currentCourses.push({name: name, uoc: uoc, icon: icon});
+    terms.CurrentTerm = currentCourses;
+
+    this.setSave(terms, currentCourses);
   }
 
   finaliseTerm = (name) => {
@@ -71,12 +75,7 @@ export default class ParentController extends React.Component {
     terms[[name]] = currentCourses;
     terms.CurrentTerm = [];    
 
-    this.setState({
-      terms: terms,
-      currentCourses: []
-    })
-    
-    this.saveData();
+    this.setSave(terms, []);
   }
 
   resetDialogs = () => {
@@ -85,6 +84,15 @@ export default class ParentController extends React.Component {
       isDialogAddMark: false,
       isDialogFinaliseTerm: false,
     })
+  }
+
+  deleteHandler = (path) => {
+    let terms = this.state.terms;
+
+    path.length == 2 && delete terms[[path[0]]].splice(path[1], 1);
+    path.length == 1 && delete terms[[path[0]]];
+
+    this.setSave(terms, terms.CurrentTerm);
   }
 
   componentDidMount = () => {
@@ -98,13 +106,17 @@ export default class ParentController extends React.Component {
     return(
       <View style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="default"/>}
-        <AppNavigator screenProps={{terms: terms, currentCourses: currentCourses}}/>
+        <AppNavigator screenProps={{
+          terms: terms, 
+          currentCourses: currentCourses,
+          deleteHandler: this.deleteHandler,
+        }}/>
 
         <Portal>
           <FAB.Group
             style={styles.fab}
             open={this.state.open}
-            icon={this.state.open ? 'keyboard-arrow-down' : 'add'}
+            icon={this.state.open ? 'keyboard-arrow-down' : 'create'}
             actions={[
               {icon: 'spellcheck', label: 'Add Mark', onPress: () => this.setState({isDialogAddMark: true})},
               {icon: 'note-add', label: 'Create New Course', onPress: () => this.setState({isDialogAddCourse: true})},
@@ -137,7 +149,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   fab: {
-    paddingBottom: 50,
+    paddingBottom: 55,
   },
   dialogContainer: {
 

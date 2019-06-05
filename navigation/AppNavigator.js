@@ -1,13 +1,22 @@
 import React from 'react';
 import { createAppContainer, createSwitchNavigator, createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import SubjectsScreen from '../screens/SubjectsScreen';
 import Colors from '../constants/Colors.js';
+import { View } from 'native-base';
+import { Icon } from 'expo';
+import { Headline } from 'react-native-paper';
 
 const HomeStack = createStackNavigator({
-  Home: screenProps => <HomeScreen data={screenProps}/>
+  Home: {
+    screen: screenProps => <HomeScreen data={screenProps}/>,
+    navigationOptions: () => ({
+      header: null,
+    }),
+  }
 });
 
 HomeStack.navigationOptions = {
@@ -18,7 +27,24 @@ HomeStack.navigationOptions = {
 };
 
 const SubjectsStack = createStackNavigator({
-  Subjects: screenProps => <SubjectsScreen data={screenProps}/>,
+  Subjects: {
+    screen: screenProps => <SubjectsScreen data={screenProps}/>,
+    navigationOptions: () => ({
+      headerTitle: 
+        <View style={{flexDirection: "row"}}>
+          <Icon.MaterialCommunityIcons 
+            size={30} 
+            name={'book-open'} 
+            color={Colors.tintColor}
+            style={{marginLeft: 14, alignSelf: "center"}}
+            title="Courses"
+          />
+          <Headline style={{fontSize: 18, marginLeft: 10, color: Colors.tintColor}}>
+            Courses
+          </Headline>
+        </View>
+    }),
+  }
 });
 
 SubjectsStack.navigationOptions = {
@@ -28,16 +54,16 @@ SubjectsStack.navigationOptions = {
   ),
 };
 
-const MainTabNavigator = createBottomTabNavigator(
+const MainTabNavigator = createMaterialBottomTabNavigator(
   {
     Home: HomeStack,
     Subjects: SubjectsStack,
   },
   {
-    tabBarOptions: {
-      activeTintColor: Colors.tintColor,
-      inactiveTintColor: Colors.tabIconDefault,
-    },
+    shifting: true,
+    activeColor: "#ffffff",
+    inactiveColor: Colors.tabIconDefault,
+    barStyle: { paddingBottom: 3, paddingTop: 3, backgroundColor: Colors.tintColor },
   },
 );
 

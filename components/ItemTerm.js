@@ -1,65 +1,62 @@
 import React from 'react';
 import { Icon } from 'expo';
-import { List, Divider, Text, Caption, } from 'react-native-paper';
+import { List, Menu, } from 'react-native-paper';
 import { StyleSheet, } from 'react-native';
 
 import Colors from '../constants/Colors.js';
 import { View } from 'native-base';
 import ItemCourse from './ItemCourse.js';
 
-export default class ItemTerms extends React.Component {
+export default class ItemTerm extends React.Component {
   state= {
     menuOpen: false,
   }
-  
+
+  deleteThis = () => {
+    this.props.deleteHandler([this.props.keyV]);
+    this.setState({menuOpen: false})
+  }
+
   render() {
-    let { terms } = this.props;
+    const { keyV, terms, deleteHandler } = this.props;
 
     return (
-      <View style={styles.listContainer}>
-        <List.Section title="Ongoing Courses">
-          <Divider/>
-            <View> 
-              <List.Subheader style={{color: Colors.tintColor}}>Current Term</List.Subheader>
-              {terms.CurrentTerm !== undefined ? 
-                Object.values(terms.CurrentTerm).map((course, i) => (
-                  <ItemCourse key={`_${course}_${i}`} course={course}/>
-                ))
-                :
-                  <List.Item 
-                    title="No courses added"
-                    left={props => <List.Icon {...props} icon="info"/>}
-                  />
-            }
-            </View>
-        </List.Section>
-        <List.Section title="Completed Courses">
-          <Divider/>
-          {Object.keys(terms).filter(key => key !== "CurrentTerm").map((key, i) => (
-            <View key={`_${key}_${i}`}> 
-              <List.Subheader style={{color: Colors.tintColor}}>{key}</List.Subheader>
-              {Object.values(terms[key]).map((course, i) => (
-                <ItemCourse key={`_${course}_${i}`} course={course}/>
-              ))}
-            </View>
-          ))} 
-        </List.Section>
+      <View> 
+        <Menu
+          visible={this.state.menuOpen}
+          onDismiss={() => this.setState({menuOpen: false})}
+          anchor={
+            <List.Subheader 
+              onLongPress={() => keyV !== "CurrentTerm" && this.setState({menuOpen: true})} 
+              style={{color: Colors.tintColor}}>
+              {keyV === "CurrentTerm" ? "Current Term" : keyV}
+            </List.Subheader>
+          }
+        >
+          <Menu.Item onPress={this.deleteThis} title="Remove Term"/>
+        </Menu>
+
+        {(keyV === "CurrentTerm" && (terms.CurrentTerm === undefined || terms.CurrentTerm.length === 0)) 
+          ?
+          <List.Item 
+            title="No courses added"
+            left={props => <List.Icon {...props} icon="info"/>}
+          />
+          :
+          Object.values(terms[keyV]).map((course, i) => (
+            <ItemCourse
+              key={`_${course}_${i}`} 
+              course={course}
+              deleteHandler={deleteHandler}
+              path={[keyV, i]}
+            />
+          ))          
+        }
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  listContainer: {
-    marginHorizontal: 10,
-    width: "95%",
-    alignSelf: "center",
-  },
-  listMark: {
-    marginHorizontal: 20,
-    marginVertical: -5,
-  },
-  UOCText: {
-    color: Colors.tintColor,
-  },
+  
 });

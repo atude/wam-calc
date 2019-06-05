@@ -14,8 +14,14 @@ export default class ItemCourse extends React.Component {
     menuOpen: false,
   }
 
+  deleteThis = () => {
+    this.props.deleteHandler(this.props.path);
+    this.setState({menuOpen: false})
+  }
+
   render() {
-    const course = this.props.course;
+    const { course } = this.props;
+
     return (
       <View style={styles.listContainer}>
         <List.Accordion
@@ -24,7 +30,7 @@ export default class ItemCourse extends React.Component {
           style={styles.listAccordion}
           left={props => 
           <View>
-            <Icon.MaterialCommunityIcons size={26} {...props} name={'shape'} style={styles.listIcons}/>
+            <Icon.MaterialCommunityIcons size={26} {...props} name={course.icon} style={styles.listIcons}/>
           </View>}
         >
 
@@ -47,7 +53,7 @@ export default class ItemCourse extends React.Component {
             />
           }
         >
-          <Menu.Item onPress={() => {}} title="Delete Course" />
+          <Menu.Item onPress={this.deleteThis} title="Remove Course"/>
         </Menu>
         
       </View>
