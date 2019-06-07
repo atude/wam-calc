@@ -16,6 +16,7 @@
     "native-base": "^2.12.1",
     "react": "^16.8.6",
     "react-native": "git+https://github.com/the-atelier/react-native.git#sdk-32",
+    "react-native-masked-text": "^1.12.3",
     "react-native-paper": "^2.16.0",
     "react-navigation": "^3.0.9",
     "react-navigation-material-bottom-tabs": "^1.0.0"

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from 'expo';
-import { List, Menu, } from 'react-native-paper';
+import { List, Menu, TouchableRipple, } from 'react-native-paper';
 import { StyleSheet, } from 'react-native';
 
 import Colors from '../constants/Colors.js';
@@ -22,19 +22,21 @@ export default class ItemTerm extends React.Component {
 
     return (
       <View> 
-        <Menu
-          visible={this.state.menuOpen}
-          onDismiss={() => this.setState({menuOpen: false})}
-          anchor={
-            <List.Subheader 
-              onLongPress={() => keyV !== "CurrentTerm" && this.setState({menuOpen: true})} 
-              style={{color: Colors.tintColor}}>
-              {keyV === "CurrentTerm" ? "Current Term" : keyV}
-            </List.Subheader>
-          }
-        >
-          <Menu.Item onPress={this.deleteThis} title="Remove Term"/>
-        </Menu>
+        <TouchableRipple onPress={()=>{}} onLongPress={() => keyV !== "CurrentTerm" && this.setState({menuOpen: true})}>
+          <Menu
+            visible={this.state.menuOpen}
+            onDismiss={() => this.setState({menuOpen: false})}
+            anchor={
+              <List.Subheader 
+                style={{color: Colors.tintColor}}>
+                {keyV === "CurrentTerm" ? "Current Term" : keyV}
+              </List.Subheader>
+            }
+          >
+            <Menu.Item onPress={this.deleteThis} title={`Remove ${keyV}`}/>
+          </Menu>
+        </TouchableRipple>
+
 
         {(keyV === "CurrentTerm" && (terms.CurrentTerm === undefined || terms.CurrentTerm.length === 0)) 
           ?
@@ -43,6 +45,7 @@ export default class ItemTerm extends React.Component {
             left={props => <List.Icon {...props} icon="info"/>}
           />
           :
+          //Reverse so its in order with newest at top
           Object.values(terms[keyV]).map((course, i) => (
             <ItemCourse
               key={`_${course}_${i}`} 

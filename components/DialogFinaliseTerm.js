@@ -17,7 +17,7 @@ export default class DialogFinaliseTerm extends React.Component {
     const year = new Date().getFullYear();
     let name = `${year} | ${this.state.dialogTermPeriod}`.toString();
     console.log(name);
-    this.props.finaliseTerm(name);
+    this.props.action(name);
     this.resetDialog();
   }
 
@@ -26,11 +26,11 @@ export default class DialogFinaliseTerm extends React.Component {
   }
 
   render() {
-    let { isDialogFinaliseTerm } = this.props;
+    let { isDialog } = this.props;
 
     return (
       <Portal>
-        <Dialog visible={isDialogFinaliseTerm} onDismiss={this.resetDialog}>
+        <Dialog visible={isDialog} onDismiss={this.resetDialog}>
           <Dialog.Title>Finalise Term</Dialog.Title>
           <Dialog.Content style={styles.dialogContainer}>
             <Subheading style={styles.pickerHeading}>Select Study Period</Subheading>
@@ -39,7 +39,7 @@ export default class DialogFinaliseTerm extends React.Component {
               prompt="Select Study Period"
               selectedValue={this.state.dialogTermPeriod}
               style={styles.periodPicker}
-              onValueChange={(itemValue, itemIndex) => this.setState({dialogTermPeriod: itemValue})}>
+              onValueChange={(itemValue, itemIndex) => {setTimeout(() => {this.setState({dialogTermPeriod: itemValue})}, 0)}}>
               {termValues.map(period => (
                 <Picker.Item key={period} label={period} value={period}/>
               ))}

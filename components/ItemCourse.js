@@ -1,13 +1,12 @@
 import React from 'react';
 import { Icon } from 'expo';
-import { List, Text, Button, IconButton, Menu, } from 'react-native-paper';
+import { List, Text, Button, IconButton, Menu, Title, } from 'react-native-paper';
 import { StyleSheet, } from 'react-native';
 
 import Colors from '../constants/Colors.js';
 import Layout from '../constants/Layout.js';
 import { View } from 'native-base';
-
-const iconSize = 25;
+import ItemMark from './ItemMark.js';
 
 export default class ItemCourse extends React.Component {
   state = {
@@ -19,8 +18,33 @@ export default class ItemCourse extends React.Component {
     this.setState({menuOpen: false})
   }
 
+  getMarkRank = (val) => {
+    if(val === 0) return ["--", Colors.na];
+    if(val < 50) return ["FL", Colors.fl];
+    if(val < 65) return ["PS", Colors.ps];
+    if(val < 75) return ["CR", Colors.cr];
+    if(val < 85) return ["DN", Colors.dn];
+    return ["HD", Colors.hd];
+  }
+
+  getCourseMarkAv = () => {
+    let marks = this.props.course.marks;
+    let avTotal = 0;
+    let weightTotal = 0;
+
+    marks.map((mark) => (
+      avTotal += parseFloat(mark.mark) * parseFloat(mark.weight)/100,
+      weightTotal += parseFloat(mark.weight)
+    ));
+
+    return avTotal / weightTotal * 100;
+  }
+
   render() {
-    const { course } = this.props;
+    let { course, path } = this.props;
+    const noMarks = (course.marks === undefined || course.marks.length === 0) ? true : false;
+    let totalAv = noMarks ? 0 : this.getCourseMarkAv();
+    let markRank = this.getMarkRank(totalAv);
 
     return (
       <View style={styles.listContainer}>
@@ -33,27 +57,56 @@ export default class ItemCourse extends React.Component {
             <Icon.MaterialCommunityIcons size={26} {...props} name={course.icon} style={styles.listIcons}/>
           </View>}
         >
-
-
-          {/* <List.Item title="Mid Exam" description="Mark of 67% | Weighted at 30%" style={styles.listMark}
-            right={props => <Icon.MaterialCommunityIcons size={20} {...props} name={'shape'} style={styles.listSubIcons}/>}
-          />
-          <List.Item title="Finals" /> */}
+          {course.marks === undefined || course.marks.length === 0 ?
+            <List.Item 
+              style={styles.listMark}
+              title="No marks added"
+              right={props => <List.Icon {...props} icon="info"/>}
+            />
+            :
+            course.marks.map((mark, i) => (
+              <ItemMark 
+                key={`_mark-${course.name}_${i}`} 
+                thisStyle={styles.listMark} 
+                mark={mark} 
+                deleteHandler={this.props.deleteHandler}
+                path={path.concat(i)}
+              />
+            ))
+          }
         </List.Accordion>
 
         <Menu
           visible={this.state.menuOpen}
           onDismiss={() => this.setState({menuOpen: false})}
           anchor={
-            <IconButton
-              icon="more-vert"
-              size={iconSize}
-              onPress={() => this.setState({menuOpen: true})}
-              style={styles.moreButton}
-            />
+            <View style={[styles.sideContent, {borderLeftColor: markRank[1]}]}>
+              <Title style={[styles.markAverageText, {color: markRank[1]}]}>
+                {totalAv.toFixed(1)}
+              </Title>
+              <Title style={[styles.markAverageText, {color: markRank[1]}]}>
+                {markRank[0]}
+              </Title>
+              {path[0] === "CurrentTerm" ?
+                <IconButton
+                  icon="more-horiz"
+                  size={Layout.iconSize}
+                  onPress={() => this.setState({menuOpen: true})}
+                  style={styles.moreButton}
+                />
+                :
+                <IconButton
+                  icon="remove"
+                  disabled={true}
+                  size={Layout.iconSize}
+                  onPress={() => {}}
+                  style={styles.moreButton}
+                />
+              } 
+            </View>
           }
         >
-          <Menu.Item onPress={this.deleteThis} title="Remove Course"/>
+          <Menu.Item onPress={this.deleteThis} title={`Remove ${course.name}`}/>
         </Menu>
         
       </View>
@@ -73,21 +126,31 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flex: 1,
     width: "100%",
-    alignItems: "center",
-    marginHorizontal: 0,
   },
   listMark: {
-    marginLeft: 20,
-    marginVertical: -5,
+    marginHorizontal: 5,
+    marginVertical: -7,
   },
   UOCText: {
     color: Colors.tintColor,
   },
   listAccordion: {
     flex: 1,
-    width: (Layout.window.width * 0.95) - (iconSize * 2),
+    width: (Layout.window.width * 0.95) - (Layout.iconSize * 2),
+    marginRight: 5,
+  },
+  sideContent: {
+    flexDirection: "column",
+    borderLeftWidth: 1.5,
+    height: '100%',
+    justifyContent: "flex-start",
   },
   moreButton: {
-    flex: 1,
+    marginVertical: -3,
   },
+  markAverageText: {
+    marginVertical: -3,
+    fontSize: 13,
+    textAlign: "center",
+  }
 });

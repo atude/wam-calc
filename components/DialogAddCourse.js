@@ -17,7 +17,12 @@ export default class DialogAddCourse extends React.Component {
   }
 
   setDialog = () => {
-    this.props.createCourse(
+    if(this.state.dialogCourseName === ""){
+      this.props.setSnackbar("Please add a name for the course.", "", "");
+      return;
+    }
+
+    this.props.action(
       this.state.dialogCourseName, 
       this.state.dialogCourseValue,
       this.state.dialogCourseIcon,
@@ -35,12 +40,12 @@ export default class DialogAddCourse extends React.Component {
   }
 
   render() {
-    let { isDialogAddCourse } = this.props;
+    let { isDialog } = this.props;
     let { dialogCourseName, dialogCourseValue, dialogCourseIcon } = this.state;
 
     return (
       <Portal>
-        <Dialog visible={isDialogAddCourse} onDismiss={this.resetDialog}>
+        <Dialog visible={isDialog} onDismiss={this.resetDialog}>
           <Dialog.Title>Add Course</Dialog.Title>
           <Dialog.Content style={styles.dialogContainer}>
             <TextInput 
@@ -127,6 +132,7 @@ const styles = StyleSheet.create({
   },  
   UOCHeading: {
     flex: 6,
+    color: Colors.tintColor,
   },
   IconRadioContainer: {
     flexDirection: 'row',
@@ -143,6 +149,7 @@ const styles = StyleSheet.create({
   },
   IconHeading: {
     flex: 6,
+    color: Colors.tintColor,
   },
   actionButtons: {
     margin: 12,
