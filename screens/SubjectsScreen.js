@@ -1,12 +1,8 @@
 import React from 'react';
 import { ScrollView, StyleSheet, AsyncStorage } from 'react-native';
-import { Icon } from 'expo';
-import Colors from '../constants/Colors';
 import { View, } from 'native-base';
-import { List, } from 'react-native-paper';
 
 import ItemPeriod from '../components/ItemPeriod';
-
 
 export default class SubjectsScreen extends React.Component {
   render() {

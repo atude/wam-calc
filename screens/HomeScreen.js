@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, } from 'react-native';
-import { Icon } from 'expo';
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 import Colors from '../constants/Colors';
 import { Paragraph, Title, Text, ProgressBar, Divider, List, IconButton } from 'react-native-paper';
@@ -43,7 +43,7 @@ export default class HomeScreen extends React.Component {
           <View style={styles.wamContentContainer}>
             <View style={styles.wamTextContainer}>
               <View style={styles.wamTextTopContainer}>
-                <Icon.MaterialCommunityIcons
+                <MaterialCommunityIcons
                   name={'progress-check'}
                   size={22}
                   style={styles.wamLogo}

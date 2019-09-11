@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { View, Picker, } from 'native-base';
 import { Text, Subheading, TextInput, Caption } from 'react-native-paper';
-// import { TextInputMask } from 'react-native-masked-text';
 
 import Colors from '../constants/Colors.js';
 
@@ -111,12 +110,10 @@ export default class RequirementsScreen extends React.Component {
             <TextInput 
               style={styles.textInputWeight}
               label={"Assessment Weight"}
-              value={Math.min(parseInt(markWeight), 100)}
+              value={(Number(markWeight) > 100 || markWeight.length > 5) ? markWeight.slice(0, 2) : markWeight}
               onChangeText={markWeight => {this.setState({markWeight})}}
               mode="outlined"
-              // render={props =>
-              //   <TextInputMask {...props} type={'only-numbers'} options={{mask: '999'}}/>
-              // }
+              keyboardType={'numeric'}
             />
           </View>
         </View>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from 'expo';
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { List, IconButton, Menu, Title, } from 'react-native-paper';
 import { StyleSheet, } from 'react-native';
 
@@ -62,7 +62,7 @@ export default class ItemCourse extends React.Component {
           style={styles.listAccordion}
           left={props => 
           <View>
-            <Icon.MaterialCommunityIcons size={26} {...props} name={course.icon}
+            <MaterialCommunityIcons size={26} {...props} name={course.icon}
               style={[styles.listIcons, {backgroundColor: accordionOpen ? Colors.tintColor : Colors.grey}]}/>
           </View>}
         >

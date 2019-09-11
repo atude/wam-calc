@@ -1,12 +1,10 @@
 import React from 'react';
-import { Icon } from 'expo';
-
-import Colors from '../constants/Colors.js';
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 export default class TabBarIcon extends React.Component {
   render() {
     return (
-      <Icon.MaterialCommunityIcons
+      <MaterialCommunityIcons
         name={this.props.name}
         size={24}
         style={{ opacity: this.props.focused ? 1 : 0.7, }}

@@ -9,7 +9,7 @@ import RequirementsScreen from '../screens/RequirementsScreen';
 
 import Colors from '../constants/Colors.js';
 import { View } from 'native-base';
-import { Icon } from 'expo';
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Headline } from 'react-native-paper';
 
 const HomeStack = createStackNavigator({
@@ -34,7 +34,7 @@ const SubjectsStack = createStackNavigator({
     navigationOptions: () => ({
       headerTitle: 
         <View style={{flexDirection: "row"}}>
-          <Icon.MaterialCommunityIcons 
+          <MaterialCommunityIcons 
             size={30} 
             name={'book-open'} 
             color={Colors.tintColor}
@@ -62,7 +62,7 @@ const RequirementsStack = createStackNavigator({
     navigationOptions: () => ({
       headerTitle: 
         <View style={{flexDirection: "row"}}>
-          <Icon.MaterialCommunityIcons 
+          <MaterialCommunityIcons 
             size={30} 
             name={'checkbox-multiple-marked-circle'} 
             color={Colors.tintColor}

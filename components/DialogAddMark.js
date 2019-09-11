@@ -1,8 +1,6 @@
 import React from 'react';
-import { Icon } from 'expo';
 import { Portal, Dialog, TextInput, Button, Subheading, Headline, Caption, Checkbox, } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-// import { TextInputMask } from 'react-native-masked-text';
 
 import Colors from '../constants/Colors.js';
 import { Picker } from 'native-base';
@@ -97,12 +95,10 @@ export default class DialogAddMark extends React.Component {
               <TextInput 
                 style={styles.textInputR}
                 label={!isWeightedMark ? "Weighting (%)" : "Weight Total"}
-                value={Math.min(parseInt(dialogMarkWeight), 100)}
+                value={(Number(dialogMarkWeight) > 100 || dialogMarkWeight.length > 5) ? dialogMarkWeight.slice(0, 2) : dialogMarkWeight}
                 onChangeText={dialogMarkWeight => {this.setState({dialogMarkWeight})}}
                 mode="outlined"
-                // render={props =>
-                //   <TextInputMask {...props} type={'only-numbers'} options={{mask: '999'}}/>
-                // }
+                keyboardType={'numeric'}
               />
             </View>
           

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Icon } from 'expo';
 import { List, Menu, TouchableRipple, } from 'react-native-paper';
 import { StyleSheet, } from 'react-native';
 

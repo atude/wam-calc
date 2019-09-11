@@ -1,8 +1,6 @@
 import React from 'react';
-import { Icon } from 'expo';
 import { Portal, Dialog, TextInput, Button, Subheading, Headline, Caption, } from 'react-native-paper';
 import { StyleSheet, View, Linking } from 'react-native';
-// import { TextInputMask } from 'react-native-masked-text';
 
 import Colors from '../constants/Colors.js';
 import { Picker } from 'native-base';
@@ -89,9 +87,7 @@ export default class DialogSettings extends React.Component {
                 value={parseInt(dialogUoc)}
                 onChangeText={dialogUoc => {this.setState({dialogUoc})}}
                 mode="flat"
-                // render={props =>
-                //   <TextInputMask {...props} type={'only-numbers'}/>
-                // }
+                keyboardType={'numeric'}
               />
             </View>
 

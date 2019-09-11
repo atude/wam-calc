@@ -1,5 +1,4 @@
 import React from 'react';
-import { Icon } from 'expo';
 import { Portal, Dialog, TextInput, Subheading, Text, Button, Caption } from 'react-native-paper';
 import { StyleSheet, View, } from 'react-native';
 

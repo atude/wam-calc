@@ -1,5 +1,4 @@
 import React from 'react';
-import { Icon } from 'expo';
 import { List, Divider, Text, Caption, Menu, } from 'react-native-paper';
 import { StyleSheet, } from 'react-native';
 
