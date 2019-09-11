@@ -1,5 +1,5 @@
 import React from 'react';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Portal, Dialog, TextInput, RadioButton, Subheading, Button } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 

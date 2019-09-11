@@ -1,10 +1,10 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { AppLoading, Asset, Font, Icon } from 'expo';
+import { AppLoading, Asset, Icon } from 'expo';
+import Font from 'expo-font';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import Colors from './constants/Colors';
 import ParentController from './ParentController';
-
 
 const theme = {
   ...DefaultTheme,

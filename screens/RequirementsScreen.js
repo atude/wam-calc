@@ -9,7 +9,7 @@ export default class RequirementsScreen extends React.Component {
   state = {
     course: "",
     courseIndex: 0,
-    markWeight: 100,
+    markWeight: "",
   } 
 
   getRequirements = (currentCourses) => {
@@ -100,7 +100,7 @@ export default class RequirementsScreen extends React.Component {
               mode="dropdown"
               selectedValue={course}
               onValueChange={(itemValue, itemIndex) => {setTimeout(() => 
-                {this.setState({course: itemValue, courseIndex: itemIndex, })}, 0)}}
+                {this.setState({course: itemValue, courseIndex: itemIndex})}, 0)}}
               >
               {currentCourses.map(course => (
                 <Picker.Item key={course.name} label={course.name} value={course.name}/>
@@ -111,7 +111,7 @@ export default class RequirementsScreen extends React.Component {
               style={styles.textInputWeight}
               label={"Assessment Weight"}
               value={(Number(markWeight) > 100 || markWeight.length > 5) ? markWeight.slice(0, 2) : markWeight}
-              onChangeText={markWeight => {this.setState({markWeight})}}
+              onChangeText={markWeight => {this.setState({markWeight: (Number(markWeight) > 100 || markWeight.length > 5) ? markWeight.slice(0, 2) : markWeight})}}
               mode="outlined"
               keyboardType={'numeric'}
             />
