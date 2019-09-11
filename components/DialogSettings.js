@@ -1,15 +1,15 @@
 import React from 'react';
 import { Icon } from 'expo';
 import { Portal, Dialog, TextInput, Button, Subheading, Headline, Caption, } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
-import { TextInputMask } from 'react-native-masked-text';
+import { StyleSheet, View, Linking } from 'react-native';
+// import { TextInputMask } from 'react-native-masked-text';
 
 import Colors from '../constants/Colors.js';
 import { Picker } from 'native-base';
 
 export default class DialogSettings extends React.Component {
   state = {
-    dialogWam: "0.00",
+    dialogWam: "",
     dialogUoc: "",
   }
 
@@ -23,9 +23,6 @@ export default class DialogSettings extends React.Component {
       this.props.setSnackbar("Please add previous units of credit for your courses.", "", "");
       return;
     }
-
-    console.log("DIUALOF")
-    console.log(this.state.dialogWam);
 
     this.props.action(
       this.state.dialogWam, 
@@ -53,15 +50,25 @@ export default class DialogSettings extends React.Component {
         <Dialog visible={isDialog} onDismiss={this.resetDialog}>
           <Dialog.Title>About</Dialog.Title>
           <Dialog.Content style={styles.dialogContainer}>
+            <Button 
+                mode="text"
+                icon="rate-review"
+                color={Colors.tintColor}
+                onPress={() => Linking.openURL("https://play.google.com/store/apps/details?id=com.atude.mywam")}
+              >
+              Leave a review!
+            </Button>
 
             <Caption style={{color: Colors.tintColor}}>
-              MyWam For Android
+              {'\n'}myWam For Android
             </Caption>
             <Caption style={{color: Colors.tintColor}}>
-              Atude / Mozamel Anwary © {new Date().getFullYear()} {'\n\n'}
+              Atude / Mozamel Anwary © {new Date().getFullYear()} {'\n'}
             </Caption>
+          
+            
 
-            <Subheading>Use existing WAM</Subheading>
+            <Subheading>{'\n'}Use existing WAM</Subheading>
             <Caption>
               Already have a WAM? Use your previous WAM without needing to add back your past courses. {'\n\n'}
               This will delete your progress for this term.{'\n'}
@@ -70,13 +77,10 @@ export default class DialogSettings extends React.Component {
               <TextInput 
                 style={styles.textInputL}
                 label="Previous WAM" 
-                value={Math.min(parseFloat(dialogWam), 100.00)}
+                keyboardType={'numeric'}
+                value={(Number(dialogWam) > 100 || dialogWam.length > 5) ? dialogWam.slice(0, 2) : dialogWam}
                 onChangeText={dialogWam => {this.setState({dialogWam})}}
                 mode="flat"
-                render={props =>
-                  <TextInputMask {...props} type={'money'} 
-                    options={{precision: 2, separator: '.', unit: '', suffixUnit: ''}}/>
-                }
               />
 
               <TextInput 
@@ -85,9 +89,9 @@ export default class DialogSettings extends React.Component {
                 value={parseInt(dialogUoc)}
                 onChangeText={dialogUoc => {this.setState({dialogUoc})}}
                 mode="flat"
-                render={props =>
-                  <TextInputMask {...props} type={'only-numbers'}/>
-                }
+                // render={props =>
+                //   <TextInputMask {...props} type={'only-numbers'}/>
+                // }
               />
             </View>
 
@@ -114,13 +118,13 @@ const styles = StyleSheet.create({
   },
   textInputR: {
     flex: 1,
-    height: 90,
+    height: 65,
     marginLeft: 5,
     marginVertical: 15,
   },
   textInputL: {
     flex: 1,
-    height: 90,
+    height: 65,
     marginRight: 5,
     marginVertical: 15,
   },

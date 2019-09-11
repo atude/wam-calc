@@ -266,6 +266,7 @@ export default class ParentController extends React.Component {
           wam: wam,
           bestWorst: bestWorst,
           stateSetter: this.stateSetter,
+          calcWam: this.calcWam,
         }}/>
 
         <Portal>
@@ -289,7 +290,6 @@ export default class ParentController extends React.Component {
           />
         </Portal>
 
-        
         
         <DialogAddCourse 
           resetDialogs={this.resetDialogs} 
@@ -316,6 +316,7 @@ export default class ParentController extends React.Component {
           setSnackbar={this.setSnackbar}
         />
         <Snackbar
+          theme={{ colors: { accent: Colors.tintLight }}}
           style={{marginBottom: 75, marginRight: 80}}
           duration={Snackbar.DURATION_SHORT}
           visible={isSnackbar}

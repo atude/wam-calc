@@ -1,8 +1,8 @@
 import React from 'react';
 import { Icon } from 'expo';
-import { Portal, Dialog, TextInput, Button, Subheading, Headline, Caption, } from 'react-native-paper';
+import { Portal, Dialog, TextInput, Button, Subheading, Headline, Caption, Checkbox, } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
-import { TextInputMask } from 'react-native-masked-text';
+// import { TextInputMask } from 'react-native-masked-text';
 
 import Colors from '../constants/Colors.js';
 import { Picker } from 'native-base';
@@ -14,6 +14,7 @@ export default class DialogAddMark extends React.Component {
     dialogMarkWeight: "",
     dialogMarkCourse: "",
     dialogMarkCourseIndex: 0,
+    isWeightedMark: false,
   }
 
   setDialog = () => { 
@@ -32,9 +33,10 @@ export default class DialogAddMark extends React.Component {
       return;
     }
 
+    const normalisedMark = !this.state.isWeightedMark ? this.state.dialogMarkValue : (this.state.dialogMarkValue / (this.state.dialogMarkWeight / 100));
     this.props.action(
       this.state.dialogMarkName, 
-      this.state.dialogMarkValue,
+      normalisedMark,
       this.state.dialogMarkWeight,
       this.state.dialogMarkCourseIndex,
     );
@@ -55,7 +57,7 @@ export default class DialogAddMark extends React.Component {
   render() {
     let { isDialog, currentCourses } = this.props;
     let { dialogMarkName, dialogMarkValue, dialogMarkWeight, 
-      dialogMarkCourse } = this.state;
+      dialogMarkCourse, isWeightedMark } = this.state;
 
 
     return (
@@ -64,49 +66,57 @@ export default class DialogAddMark extends React.Component {
           <Dialog.Title>Add Mark</Dialog.Title>
           <Dialog.Content style={styles.dialogContainer}>
 
+            <View style={{flexDirection: 'row', marginBottom: 4}}>
+              <Checkbox onPress={() => this.setState({isWeightedMark: !isWeightedMark})} 
+                status={isWeightedMark ? 'checked' : 'unchecked'}>
+              </Checkbox>
+              <Subheading style={styles.checkboxText} 
+                onPress={() => this.setState({isWeightedMark: !isWeightedMark})}>
+                Pre-weighted
+              </Subheading>
+            </View>
+
             <TextInput 
               style={styles.textInputFull}
               label="Assessment Name" 
               value={dialogMarkName}
               onChangeText={dialogMarkName => {this.setState({dialogMarkName})}}
               mode="outlined"
-            />
+            />           
 
             <View style={styles.inputContainer}>
               <TextInput 
                 style={styles.textInputL}
-                label="Mark (%)" 
-                value={Math.min(parseInt(dialogMarkValue), 100)}
+                label={!isWeightedMark ? "Mark (%)" : "Weighted Mark"} 
+                keyboardType={'numeric'}
+                value={(Number(dialogMarkValue) > 100 || dialogMarkValue.length > 5) ? dialogMarkValue.slice(0, 2) : dialogMarkValue}
                 onChangeText={dialogMarkValue => {this.setState({dialogMarkValue})}}
                 mode="outlined"
-                render={props =>
-                  <TextInputMask {...props} type={'only-numbers'} options={{mask: '999'}}/>
-                }
               />
 
               <TextInput 
                 style={styles.textInputR}
-                label="Weighting (%)" 
+                label={!isWeightedMark ? "Weighting (%)" : "Weight Total"}
                 value={Math.min(parseInt(dialogMarkWeight), 100)}
                 onChangeText={dialogMarkWeight => {this.setState({dialogMarkWeight})}}
                 mode="outlined"
-                render={props =>
-                  <TextInputMask {...props} type={'only-numbers'} options={{mask: '999'}}/>
-                }
+                // render={props =>
+                //   <TextInputMask {...props} type={'only-numbers'} options={{mask: '999'}}/>
+                // }
               />
             </View>
-            
-              <Subheading style={styles.courseHeading}>Select Course</Subheading>
-              <Picker
-                mode="dropdown"
-                selectedValue={dialogMarkCourse}
-                onValueChange={(itemValue, itemIndex) => {setTimeout(() => 
-                  {this.setState({dialogMarkCourse: itemValue, dialogMarkCourseIndex: itemIndex})}, 0)}}
-                >
-                {currentCourses.map(course => (
-                  <Picker.Item key={course.name} label={course.name} value={course.name}/>
-                ))}
-              </Picker>
+          
+            <Subheading style={styles.courseHeading}>Select Course</Subheading>
+            <Picker
+              mode="dropdown"
+              selectedValue={dialogMarkCourse}
+              onValueChange={(itemValue, itemIndex) => {setTimeout(() => 
+                {this.setState({dialogMarkCourse: itemValue, dialogMarkCourseIndex: itemIndex})}, 0)}}
+              >
+              {currentCourses.map(course => (
+                <Picker.Item key={course.name} label={course.name} value={course.name}/>
+              ))}
+            </Picker>
 
           </Dialog.Content>
           <Dialog.Actions>
@@ -120,6 +130,10 @@ export default class DialogAddMark extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  checkboxText: {
+    textAlign: 'right',
+    textAlignVertical: 'center'
+  },
   dialogContainer: {
 
   }, 

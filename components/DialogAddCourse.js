@@ -1,13 +1,14 @@
 import React from 'react';
-import { Icon } from 'expo';
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Portal, Dialog, TextInput, RadioButton, Subheading, Text, Button } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 
 import Colors from '../constants/Colors.js';
+import { Picker } from 'native-base';
 
-const uocValues = [2,3,6];
-const iconValuesA = ["shape", "code-tags", "finance", "math-compass"];
-const iconValuesB = ["brush", "music-note", "basketball", "flask"];
+const uocValues = [2,3,4,6,12];
+const iconValuesA = ["shape", "code-tags", "chart-areaspline", "math-compass", "database"];
+const iconValuesB = ["brush", "music-note", "basketball", "flask", "worker"];
 
 export default class DialogAddCourse extends React.Component {
   state = {
@@ -27,6 +28,7 @@ export default class DialogAddCourse extends React.Component {
       this.state.dialogCourseValue,
       this.state.dialogCourseIcon,
     );
+
     this.resetDialog();
   }
 
@@ -47,7 +49,7 @@ export default class DialogAddCourse extends React.Component {
       <Portal>
         <Dialog visible={isDialog} onDismiss={this.resetDialog}>
           <Dialog.Title>Add Course</Dialog.Title>
-          <Dialog.Content style={styles.dialogContainer}>
+          <Dialog.Content>
             <TextInput 
               label="Course Name" 
               value={dialogCourseName}
@@ -55,20 +57,21 @@ export default class DialogAddCourse extends React.Component {
               mode="outlined"
             />
 
-            <RadioButton.Group 
-              onValueChange={dialogCourseValue => this.setState({dialogCourseValue})} 
-              value={dialogCourseValue}
-            >
-              <View style={styles.UOCRadioContainer}>
-                <Subheading style={styles.UOCHeading}>Units of Credit</Subheading>
+            <View style={styles.UOCPickerContainer}>
+              <Subheading style={styles.UOCHeading}>Units of Credit</Subheading>
+              <Picker
+                style={styles.UOCPicker}
+                mode="dropdown"
+                selectedValue={dialogCourseValue}
+                onValueChange={(itemValue, itemIndex) => {setTimeout(() => 
+                  {this.setState({dialogCourseValue: itemValue})}, 0)}}
+                >
+
                 {uocValues.map(uoc => (
-                  <View key={`uoc_li_${uoc}`} style={styles.UOCRadioPicker}>
-                    <RadioButton value={uoc}/>
-                    <Text style={styles.UOCRadioLabel}>{uoc}</Text>
-                  </View>
+                  <Picker.Item key={`uoc_${uoc}`} label={uoc.toString()} value={uoc}/>
                 ))}
-              </View>
-            </RadioButton.Group>
+              </Picker>
+            </View>           
 
             <RadioButton.Group 
               onValueChange={dialogCourseIcon => this.setState({dialogCourseIcon})} 
@@ -79,7 +82,7 @@ export default class DialogAddCourse extends React.Component {
                 {iconValuesA.map(icon => (
                   <View key={`uoc_li_${icon}`} style={styles.IconRadioPicker}>
                     <RadioButton value={icon}/>
-                    <Icon.MaterialCommunityIcons size={20} name={icon} style={styles.radioIcons}/>
+                    <MaterialCommunityIcons size={20} name={icon}/>
                   </View>
                 ))}
               </View>
@@ -88,7 +91,7 @@ export default class DialogAddCourse extends React.Component {
                 {iconValuesB.map(icon => (
                   <View key={`uoc_li_${icon}`} style={styles.IconRadioPicker}>
                     <RadioButton value={icon}/>
-                    <Icon.MaterialCommunityIcons size={20} name={icon} style={styles.radioIcons}/>
+                    <MaterialCommunityIcons size={20} name={icon}/>
                   </View>
                 ))}
               </View>
@@ -106,32 +109,17 @@ export default class DialogAddCourse extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  dialogContainer: {
-
-  }, 
-  listIcons: {
-
-  },
-  radioIcons: {
-
-  },
-  UOCRadioContainer: {
+  UOCPickerContainer: {
     flexDirection: 'row',
     alignItems: "center",
     marginHorizontal: 5,
     marginTop: 20,
-  } ,
-  UOCRadioPicker: {
-    flexDirection: 'row',
-    alignItems: "center",
-    flex: 1,
-    marginRight: 15,
   },
-  UOCRadioLabel: {
-
-  },  
+  UOCPicker: {
+    flex: 1,
+  },
   UOCHeading: {
-    flex: 6,
+    flex: 2,
     color: Colors.tintColor,
   },
   IconRadioContainer: {
@@ -140,16 +128,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     marginTop: 20,
     flexWrap: 'wrap',
-  } ,
+  },
+  IconHeading: {
+    flex: 6,
+    color: Colors.tintColor,
+  },
   IconRadioPicker: {
     flexDirection: 'column',
     alignItems: "center",
     marginLeft: 15,
     flex: 2,
-  },
-  IconHeading: {
-    flex: 6,
-    color: Colors.tintColor,
   },
   actionButtons: {
     margin: 12,

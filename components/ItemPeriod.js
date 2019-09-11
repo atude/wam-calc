@@ -9,13 +9,13 @@ import ItemTerm from './ItemTerm.js';
 
 export default class ItemPeriod extends React.Component {
   render() {
-    const { terms, deleteHandler } = this.props;
+    const { terms, deleteHandler, calcWam } = this.props;
 
     return (
       <View style={styles.listContainer}>
         <List.Section title="Ongoing Courses">
           <Divider/>
-          <ItemTerm key={`_currentterm_`} terms={terms} deleteHandler={deleteHandler} keyV={"CurrentTerm"}/>
+          <ItemTerm calcWam={calcWam} key={`_currentterm_`} terms={terms} deleteHandler={deleteHandler} keyV={"CurrentTerm"}/>
         </List.Section>
         
         {/* Only show completed courses if they exist */}
@@ -23,7 +23,7 @@ export default class ItemPeriod extends React.Component {
           <List.Section title="Completed Courses">
             <Divider/>
             {Object.keys(terms).filter(key => key !== "CurrentTerm").reverse().map((key, i) => (
-              <ItemTerm key={`_${key}_${i}`} terms={terms} deleteHandler={deleteHandler} keyV={key}/>
+              <ItemTerm calcWam={calcWam} key={`_${key}_${i}`} terms={terms} deleteHandler={deleteHandler} keyV={key}/>
             ))} 
           </List.Section>
         }

@@ -1,10 +1,8 @@
 import React from 'react';
-import { Icon } from 'expo';
 import { List, Title, TouchableRipple, Menu, } from 'react-native-paper';
 import { StyleSheet, } from 'react-native';
 
 import Colors from '../constants/Colors.js';
-import { View } from 'native-base';
 
 export default class ItemMark extends React.Component {
   state = {
@@ -17,12 +15,12 @@ export default class ItemMark extends React.Component {
   }
 
   getMarkRank = () => {
-    const intVal = parseInt(this.props.mark.mark);
+    const val = parseFloat(this.props.mark.mark).toFixed(2);
 
-    if(intVal < 50) return ["FL", Colors.fl];
-    if(intVal < 65) return ["PS", Colors.ps];
-    if(intVal < 75) return ["CR", Colors.cr];
-    if(intVal < 85) return ["DN", Colors.dn];
+    if(val < 50) return ["FL", Colors.fl];
+    if(val < 65) return ["PS", Colors.ps];
+    if(val < 75) return ["CR", Colors.cr];
+    if(val < 85) return ["DN", Colors.dn];
     return ["HD", Colors.hd];
   }
 
@@ -41,7 +39,7 @@ export default class ItemMark extends React.Component {
               title={mark.name}
               description={`Weighted at ${mark.weight}%`}
               right={() => 
-                <Title style={{color: markRank[1], marginTop: 13, marginRight: 5, fontSize: 16,}}>{mark.mark} {markRank[0]}</Title>
+                <Title style={{color: markRank[1], marginTop: 13, marginRight: 5, fontSize: 16,}}>{Number(mark.mark)} {markRank[0]}</Title>
               }
             />
           }

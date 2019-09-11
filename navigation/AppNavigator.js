@@ -5,6 +5,8 @@ import { createMaterialBottomTabNavigator } from "react-navigation-material-bott
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import SubjectsScreen from '../screens/SubjectsScreen';
+import RequirementsScreen from '../screens/RequirementsScreen';
+
 import Colors from '../constants/Colors.js';
 import { View } from 'native-base';
 import { Icon } from 'expo';
@@ -54,10 +56,39 @@ SubjectsStack.navigationOptions = {
   ),
 };
 
+const RequirementsStack = createStackNavigator({
+  Requirements: {
+    screen: screenProps => <RequirementsScreen data={screenProps} style={{backgroundColor: Colors.tintColor}}/>,
+    navigationOptions: () => ({
+      headerTitle: 
+        <View style={{flexDirection: "row"}}>
+          <Icon.MaterialCommunityIcons 
+            size={30} 
+            name={'checkbox-multiple-marked-circle'} 
+            color={Colors.tintColor}
+            style={{marginLeft: 14, alignSelf: "center"}}
+            title="Mark Requirements"
+          />
+          <Headline style={{fontSize: 18, marginLeft: 10, color: Colors.tintColor}}>
+            Mark Requirements
+          </Headline>
+        </View>
+    }),
+  }
+});
+
+RequirementsStack.navigationOptions = {
+  tabBarLabel: 'Mark Requirements',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={'checkbox-multiple-marked-circle'}/>
+  ),
+};
+
 const MainTabNavigator = createMaterialBottomTabNavigator(
   {
     Home: HomeStack,
     Subjects: SubjectsStack,
+    Requirements: RequirementsStack
   },
   {
     shifting: true,

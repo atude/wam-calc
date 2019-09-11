@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from 'expo';
-import { List, Text, Button, IconButton, Menu, Title, } from 'react-native-paper';
+import { List, IconButton, Menu, Title, } from 'react-native-paper';
 import { StyleSheet, } from 'react-native';
 
 import Colors from '../constants/Colors.js';
@@ -11,6 +11,7 @@ import ItemMark from './ItemMark.js';
 export default class ItemCourse extends React.Component {
   state = {
     menuOpen: false,
+    accordionOpen: false,
   }
 
   deleteThis = () => {
@@ -40,21 +41,29 @@ export default class ItemCourse extends React.Component {
     return avTotal / weightTotal * 100;
   }
 
+  getCourseCompletion = () => {
+    return this.props.course.marks.reduce((a, b) => a + Number(b.weight), 0);
+  }
+
   render() {
     let { course, path } = this.props;
+    let { accordionOpen } = this.state;
     const noMarks = (course.marks === undefined || course.marks.length === 0) ? true : false;
+    const courseCompletion = this.getCourseCompletion();
     let totalAv = noMarks ? 0 : this.getCourseMarkAv();
     let markRank = this.getMarkRank(totalAv);
 
     return (
       <View style={styles.listContainer}>
         <List.Accordion
+          onPress={() => this.setState({accordionOpen: !accordionOpen})}
           title={course.name}
-          description={`${course.uoc} Units of Credit`}
+          description={`${courseCompletion}% Complete | ${course.uoc} Credits`}
           style={styles.listAccordion}
           left={props => 
           <View>
-            <Icon.MaterialCommunityIcons size={26} {...props} name={course.icon} style={styles.listIcons}/>
+            <Icon.MaterialCommunityIcons size={26} {...props} name={course.icon}
+              style={[styles.listIcons, {backgroundColor: accordionOpen ? Colors.tintColor : Colors.grey}]}/>
           </View>}
         >
           {course.marks === undefined || course.marks.length === 0 ?
@@ -117,6 +126,9 @@ export default class ItemCourse extends React.Component {
 const styles = StyleSheet.create({
   listIcons: {
     marginHorizontal: 5,
+    color: '#ffffff',
+    borderRadius: 4,
+    padding: 5,
   },
   listSubIcons: {
     marginVertical: 20,

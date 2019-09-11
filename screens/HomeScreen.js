@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, } from 'react-native';
+import { Icon } from 'expo';
 
 import Colors from '../constants/Colors';
 import { Paragraph, Title, Text, ProgressBar, Divider, List, IconButton } from 'react-native-paper';
@@ -41,7 +42,16 @@ export default class HomeScreen extends React.Component {
           />
           <View style={styles.wamContentContainer}>
             <View style={styles.wamTextContainer}>
-              <Text style={styles.wamTextLabel}>My WAM</Text>
+              <View style={styles.wamTextTopContainer}>
+                <Icon.MaterialCommunityIcons
+                  name={'progress-check'}
+                  size={22}
+                  style={styles.wamLogo}
+                  color="#fff"
+                />
+                <Text style={styles.wamTextLabel}>My WAM</Text>
+               
+              </View>
               <Text style={styles.wamText}>{wam < 0.1 ? "--" : wam}</Text>
             </View>
             <View style={styles.wamProgressContainer}>
@@ -68,13 +78,13 @@ export default class HomeScreen extends React.Component {
               <List.Item
                 title={bestWorst[0][0]}
                 description="Greatest Performing Course"
-                right={() => <Title style={[styles.markText, {color: bestMarkRank[1]}]}>{bestWorst[0][1]} {bestMarkRank[0]}</Title>}
+                right={() => <Title style={[styles.markText, {color: bestMarkRank[1]}]}>{Number(bestWorst[0][1])} {bestMarkRank[0]}</Title>}
                 left={(props) => <List.Icon {...props} size={Layout.iconSize} icon="assignment-turned-in" />}
               />
               <List.Item
                 title={bestWorst[1][0]}
                 description="Poorest Performing Course"
-                right={() => <Title style={[styles.markText, {color: worstMarkRank[1]}]}>{bestWorst[1][1]} {worstMarkRank[0]}</Title>}
+                right={() => <Title style={[styles.markText, {color: worstMarkRank[1]}]}>{Number(bestWorst[1][1])} {worstMarkRank[0]}</Title>}
                 left={(props) => <List.Icon {...props} size={Layout.iconSize} icon="assignment-returned" />}
               />
             </List.Section>
@@ -102,6 +112,7 @@ const styles = StyleSheet.create({
   },
   wamContentContainer: {
     flex: 1, 
+    marginTop: '5%',
     flexDirection: 'row',
   },
   statsContainer: {
@@ -117,11 +128,25 @@ const styles = StyleSheet.create({
     fontSize: 40,
     textAlign: 'right',
   },
+  wamTextTopContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    alignSelf: 'flex-end',
+    width: '50%',
+    flexWrap: 'nowrap',
+  },
   wamTextLabel: {
+    flex: 4,
     color: "#fff",
     opacity: Colors.lightOpacity,
-    fontSize: 20,
+    fontSize: 18,
     textAlign: 'right',
+    flexWrap: 'nowrap',
+  },
+  wamLogo:{
+    flex: 1,
+    opacity: Colors.lightOpacity,
+    flexWrap: 'nowrap',
   },
   wamProgressContainer: {
     flex: 1,

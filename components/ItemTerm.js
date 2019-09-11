@@ -18,7 +18,7 @@ export default class ItemTerm extends React.Component {
   }
 
   render() {
-    const { keyV, terms, deleteHandler } = this.props;
+    const { keyV, terms, deleteHandler, calcWam } = this.props;
 
     return (
       <View> 
@@ -29,7 +29,7 @@ export default class ItemTerm extends React.Component {
             anchor={
               <List.Subheader 
                 style={{color: Colors.tintColor}}>
-                {keyV === "CurrentTerm" ? "Current Term" : keyV}
+                {keyV === "CurrentTerm" ? "Current Term" : `${keyV}  | ${calcWam({keyV: terms[keyV]})[0]} Term WAM`}  
               </List.Subheader>
             }
           >
