@@ -1,9 +1,9 @@
 import React from 'react';
 import { Portal, Dialog, TextInput, Button, Subheading, Headline, Caption, } from 'react-native-paper';
 import { StyleSheet, View, Linking } from 'react-native';
-
 import Colors from '../constants/Colors.js';
-import { Picker } from 'native-base';
+import getFirebase from '../firebase/firebaseConfig.js';
+import { signOut } from '../firebase/firebaseFunctions.js';
 
 export default class DialogSettings extends React.Component {
   state = {
@@ -48,6 +48,13 @@ export default class DialogSettings extends React.Component {
         <Dialog visible={isDialog} onDismiss={this.resetDialog}>
           <Dialog.Title>About</Dialog.Title>
           <Dialog.Content style={styles.dialogContainer}>
+            <Button 
+                mode="text"
+                color={Colors.tintColor}
+                onPress={signOut}
+              >
+              Sign out from {getFirebase.auth().currentUser.email}
+            </Button>
             <Button 
                 mode="text"
                 icon="rate-review"

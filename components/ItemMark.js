@@ -39,7 +39,7 @@ export default class ItemMark extends React.Component {
               title={mark.name}
               description={`Weighted at ${mark.weight}%`}
               right={() => 
-                <Title style={{color: markRank[1], marginTop: 13, marginRight: 5, fontSize: 16,}}>{Number(mark.mark)} {markRank[0]}</Title>
+                <Title style={{color: markRank[1], marginTop: 13, marginRight: 5, fontSize: 16,}}>{Number(mark.mark).toFixed(2)} {markRank[0]}</Title>
               }
             />
           }

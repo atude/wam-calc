@@ -10,6 +10,7 @@ import DialogSettings from './components/DialogSettings';
 
 import Layout from './constants/Layout';
 import Colors from './constants/Colors';
+import getFirebase from './firebase/firebaseConfig';
 
 export default class ParentController extends React.Component {
   state = {
@@ -44,20 +45,45 @@ export default class ParentController extends React.Component {
   }
 
   loadData = async () => {
-    try {
-      let get = await AsyncStorage.getItem('terms');
+    let get = await AsyncStorage.getItem('terms');
+    let timestamp = await AsyncStorage.getItem('timestamp');
+    console.log(this.props.email);
+    console.log(get);
+    console.log(timestamp);
 
-      if (get !== null) {
-        get = JSON.parse(get);
-        if(get === undefined || Object.keys(get).length === 0) {
-          get = {"CurrentTerm": []};
-        }
+    //Get firebase save
+    let getOnline = null;
+    getOnline = await getFirebase.firestore()
+    .collection("users")
+    .doc(this.props.email)
+    .get()
+    .then((doc) => {
+      if(doc.exists && 
+          !!doc.data().timestamp && !!timestamp &&
+          Number(doc.data().timestamp) > Number(timestamp))
+        return doc.data().terms;
+      else
+        return null
+    }).catch((error) => {
+      console.log(error.message);
+    });
+    
+    //If online exists and is newer
+    if(getOnline != null) {
+      get = getOnline;
+      console.log("Got data from firebase");
+    } else {
+      //Process local save
+      get = JSON.parse(get);
 
-        this.setSave(get, get.CurrentTerm);
+      if(get === undefined || Object.keys(get).length === 0) {
+        get = {"CurrentTerm": []};
       }
-    } catch (error) {
-      console.log("Bad/No Load");
     }
+
+    this.setSave(get, get.CurrentTerm);
+    console.log(get);
+
   }
 
   setSave = async (terms, currentCourses) => {
@@ -75,10 +101,22 @@ export default class ParentController extends React.Component {
     })
 
     try {
+      //Timestamp needed for data syncing
+      const timestamp = new Date().valueOf().toString();
+
       await AsyncStorage.setItem('terms', JSON.stringify(terms));
+      await AsyncStorage.setItem('timestamp', timestamp);
+      await getFirebase.firestore()
+      .collection("users")
+      .doc(this.props.email)
+      .set({
+        terms: terms,
+        timestamp: timestamp
+      })
       console.log("Saved.");
     } catch (error) {
       console.log("Bad Save");
+      console.log(error);
     }
   }
 
