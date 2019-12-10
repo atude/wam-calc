@@ -1,10 +1,10 @@
-import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { AppLoading, Asset, Icon } from 'expo';
-import Font from 'expo-font';
+import React, { useState } from 'react';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import Colors from './constants/Colors';
 import ParentController from './ParentController';
+import getFirebase from './firebase/firebaseConfig';
+import LoadingItem from './components/LoadingItem';
+import LoginScreen from './screens/LoginScreen';
 
 const theme = {
   ...DefaultTheme,
@@ -16,49 +16,27 @@ const theme = {
   }
 };
 
-export default class App extends React.Component {
-  state = {
-    isLoadingComplete: false,
-  };
+export default function App(props) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  render() {
-    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
-      return (
-        <AppLoading
-          startAsync={this._loadResourcesAsync}
-          onError={this._handleLoadingError}
-          onFinish={this._handleFinishLoading}
-        />
-      );
+  getFirebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      setUser(user);
+      console.log("Auth state changed => " + user.email);
     } else {
-      return (
-        <PaperProvider theme={theme}>
-          <ParentController/>
-        </PaperProvider>
-      );
+      setUser(null);
     }
-  }
 
-  _loadResourcesAsync = async () => {
-    return Promise.all([
-      Font.loadAsync({
-        // This is the font that we are using for our tab bar
-        ...Icon.Ionicons.font,
-        // We include SpaceMono because we use it in HomeScreen.js. Feel free
-        // to remove this if you are not using it in your app
-        'roboto-light': require('./assets/fonts/Roboto-Light.ttf'),
-        'roboto': require('./assets/fonts/Roboto-Regular.ttf'),
-      }),
-    ]);
-  };
+    setLoading(false);
+  });
 
-  _handleLoadingError = error => {
-    // In this case, you might want to report the error to your error
-    // reporting service, for example Sentry
-    console.warn(error);
-  };
+  if(loading) return <LoadingItem/>;
+  if(!user) return <LoginScreen/>;
 
-  _handleFinishLoading = () => {
-    this.setState({ isLoadingComplete: true });
-  };
+  return (
+    <PaperProvider theme={theme}>
+      <ParentController email={user.email}/>
+    </PaperProvider>
+  );
 }
