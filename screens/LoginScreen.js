@@ -45,6 +45,15 @@ export default function LoginScreen(props) {
     setIsLoading(false);
   }
 
+  if(props.isMainLoading) {
+    return (
+    <View style={styles.container}>
+      <Image style={styles.loginIcon} source={require('../assets/images/loginicon.png')} />
+      <LoadingItem isLoading={true}/>
+    </View>
+    );
+  };
+
   return (    
     <View style={styles.container}>
       <Image style={styles.loginIcon} source={require('../assets/images/loginicon.png')} />

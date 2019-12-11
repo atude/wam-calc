@@ -20,6 +20,7 @@ const theme = {
 export default function App(props) {
   const [user, setUser] = useState(null);
   const [skipAccount, setSkipAccount] = useState("false");
+  const [isMainLoading, setIsMainLoading] = useState("true");
 
   const handleSetSkipAccount = (setSkip) => {
     setSkipAccount(setSkip);
@@ -31,7 +32,7 @@ export default function App(props) {
       setSkipAccount("true");
     }
 
-    console.log("isCheckSkip: " + isCheckSkip)
+    console.log("isCheckSkip: " + isCheckSkip);
   });
  
   getFirebase.auth().onAuthStateChanged((user) => {
@@ -41,12 +42,14 @@ export default function App(props) {
     } else {
       setUser(null);
     }
+
+    setIsMainLoading(false);
   });
 
   return (
     <>
     {(!user && skipAccount == "false") ?
-      <LoginScreen handleSetSkipAccount={handleSetSkipAccount}/> 
+      <LoginScreen isMainLoading={isMainLoading} handleSetSkipAccount={handleSetSkipAccount}/> 
       :
       <PaperProvider theme={theme}>
         <ParentController email={user ? user.email : null} handleSetSkipAccount={handleSetSkipAccount}/>
