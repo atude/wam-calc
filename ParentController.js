@@ -71,7 +71,6 @@ export default class ParentController extends React.Component {
     //If online exists and is newer
     if(getOnline != null) {
       get = getOnline;
-      console.log("Got data from firebase");
     } else {
       //Process local save
       get = JSON.parse(get);
