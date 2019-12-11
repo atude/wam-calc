@@ -1,6 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, AsyncStorage } from 'react-native';
-import { View, } from 'native-base';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import ItemPeriod from '../components/ItemPeriod';
 

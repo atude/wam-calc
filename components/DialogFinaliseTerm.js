@@ -1,9 +1,8 @@
 import React from 'react';
-import { Portal, Dialog, TextInput, Subheading, Text, Button, Caption } from 'react-native-paper';
-import { StyleSheet, View, } from 'react-native';
+import { Portal, Dialog, Subheading, Button, Caption } from 'react-native-paper';
+import { StyleSheet, Picker } from 'react-native';
 
 import Colors from '../constants/Colors.js';
-import { Picker } from 'native-base';
 
 const termValues = ["Term 1", "Term 2", "Term 3", "Semester 1", "Semester 2", "Summer Term"];
 

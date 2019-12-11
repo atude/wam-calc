@@ -8,9 +8,9 @@ import SubjectsScreen from '../screens/SubjectsScreen';
 import RequirementsScreen from '../screens/RequirementsScreen';
 
 import Colors from '../constants/Colors.js';
-import { View } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Headline } from 'react-native-paper';
+import { View } from 'react-native';
 
 const HomeStack = createStackNavigator({
   Home: {
@@ -32,16 +32,19 @@ const SubjectsStack = createStackNavigator({
   Subjects: {
     screen: screenProps => <SubjectsScreen data={screenProps}/>,
     navigationOptions: () => ({
+      headerStyle: {
+        backgroundColor: Colors.tintColor,
+      },
       headerTitle: 
         <View style={{flexDirection: "row"}}>
           <MaterialCommunityIcons 
             size={30} 
             name={'book-open'} 
-            color={Colors.tintColor}
+            color={"#fff"}
             style={{marginLeft: 14, alignSelf: "center"}}
             title="Courses"
           />
-          <Headline style={{fontSize: 18, marginLeft: 10, color: Colors.tintColor}}>
+          <Headline style={{fontSize: 18, marginLeft: 10, color: "#fff"}}>
             Courses
           </Headline>
         </View>
@@ -60,16 +63,19 @@ const RequirementsStack = createStackNavigator({
   Requirements: {
     screen: screenProps => <RequirementsScreen data={screenProps} style={{backgroundColor: Colors.tintColor}}/>,
     navigationOptions: () => ({
+      headerStyle: {
+        backgroundColor: Colors.tintColor,
+      },
       headerTitle: 
         <View style={{flexDirection: "row"}}>
           <MaterialCommunityIcons 
             size={30} 
             name={'checkbox-multiple-marked-circle'} 
-            color={Colors.tintColor}
+            color={"#fff"}
             style={{marginLeft: 14, alignSelf: "center"}}
             title="Mark Requirements"
           />
-          <Headline style={{fontSize: 18, marginLeft: 10, color: Colors.tintColor}}>
+          <Headline style={{fontSize: 18, marginLeft: 10, color: "#fff"}}>
             Mark Requirements
           </Headline>
         </View>

@@ -1,9 +1,8 @@
 import React from 'react';
 import { List, Menu, TouchableRipple, } from 'react-native-paper';
-import { StyleSheet, } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import Colors from '../constants/Colors.js';
-import { View } from 'native-base';
 import ItemCourse from './ItemCourse.js';
 
 export default class ItemTerm extends React.Component {

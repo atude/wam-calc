@@ -1,20 +1,21 @@
 import React  from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import Colors from '../constants/Colors';
+import { ActivityIndicator } from 'react-native-paper';
 
-export default function LoadingItem() {
+export default function LoadingItem(props) {
   return (
-    <View style={styles.container}>
-      <Text>
-        Loading
-      </Text>
-    </View>
+    <ActivityIndicator 
+      style={styles.indicator} 
+      animating={props.isLoading} 
+      color={"#fff"} 
+      size="large"
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 15,
-    backgroundColor: '#fff',
+  indicator: {
+    marginTop: 20,
   },
 });

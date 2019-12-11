@@ -1,11 +1,10 @@
 import React from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { List, IconButton, Menu, Title, } from 'react-native-paper';
-import { StyleSheet, } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import Colors from '../constants/Colors.js';
 import Layout from '../constants/Layout.js';
-import { View } from 'native-base';
 import ItemMark from './ItemMark.js';
 
 export default class ItemCourse extends React.Component {

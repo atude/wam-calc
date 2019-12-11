@@ -8,10 +8,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Layout from '../constants/Layout';
 
 export default class HomeScreen extends React.Component {
-  state = {
-
-  }
-
   getMarkRank = (val) => {
     if(val < 0.1) return ["--", Colors.na];
     if(val < 50) return ["FL", Colors.fl];
@@ -28,29 +24,29 @@ export default class HomeScreen extends React.Component {
     if(bestWorst === undefined) bestWorst = [["--", 0], ["--", 0]];
     
     const bestMarkRank = this.getMarkRank(bestWorst[0][1]);
-    const worstMarkRank =this.getMarkRank(bestWorst[1][1]);
+    const worstMarkRank = this.getMarkRank(bestWorst[1][1]);
 
     return (
       <View style={styles.container}>
         <View style={styles.wamContainer}>
           <IconButton
             style={styles.helpButton}
-            icon="help-outline"
+            icon="settings"
             color={Colors.tabIconDefault}
-            size={25}
+            size={30}
             onPress={() => stateSetter("isDialogSettings", true)}
           />
           <View style={styles.wamContentContainer}>
             <View style={styles.wamTextContainer}>
               <View style={styles.wamTextTopContainer}>
+             
+                <Text style={styles.wamTextLabel}>My WAM</Text>
                 <MaterialCommunityIcons
                   name={'progress-check'}
                   size={22}
                   style={styles.wamLogo}
                   color="#fff"
                 />
-                <Text style={styles.wamTextLabel}>My WAM</Text>
-               
               </View>
               <Text style={styles.wamText}>{wam < 0.1 ? "--" : wam}</Text>
             </View>
@@ -147,6 +143,7 @@ const styles = StyleSheet.create({
     flex: 1,
     opacity: Colors.lightOpacity,
     flexWrap: 'nowrap',
+    paddingLeft: 5,
   },
   wamProgressContainer: {
     flex: 1,
