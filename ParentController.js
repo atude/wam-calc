@@ -46,9 +46,6 @@ export default class ParentController extends React.Component {
   loadData = async () => {
     let get = await AsyncStorage.getItem('terms');
     let timestamp = await AsyncStorage.getItem('timestamp');
-    console.log(this.props.email);
-    console.log(get);
-    console.log(timestamp);
 
     //Get firebase save
     let getOnline = null;
@@ -59,8 +56,10 @@ export default class ParentController extends React.Component {
       .get()
       .then((doc) => {
         if(doc.exists && 
-            !!doc.data().timestamp && !!timestamp &&
+            (!!doc.data().timestamp && !!timestamp &&
             Number(doc.data().timestamp) > Number(timestamp))
+            ||
+            (!timestamp))
           return doc.data().terms;
         else
           return null
