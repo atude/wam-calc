@@ -1,6 +1,6 @@
 import React from 'react';
-import { Portal, Dialog, TextInput, Button, Subheading, Headline, Caption, } from 'react-native-paper';
-import { StyleSheet, View, Linking } from 'react-native';
+import { Portal, Dialog, TextInput, Button, Subheading, Caption, Text } from 'react-native-paper';
+import { StyleSheet, View, Linking, AsyncStorage } from 'react-native';
 import Colors from '../constants/Colors.js';
 import getFirebase from '../firebase/firebaseConfig.js';
 import { signOut } from '../firebase/firebaseFunctions.js';
@@ -9,6 +9,12 @@ export default class DialogSettings extends React.Component {
   state = {
     dialogWam: "",
     dialogUoc: "",
+  }
+
+  enableLogin = async () => {
+    await AsyncStorage.setItem("skipAccount", "false");
+    this.props.handleSetSkipAccount("false");
+    console.log("not skippin acount now");
   }
 
   setDialog = () => { 
@@ -42,38 +48,44 @@ export default class DialogSettings extends React.Component {
     let { isDialog } = this.props;
     let { dialogWam, dialogUoc, } = this.state;
 
-
     return (
       <Portal>
         <Dialog visible={isDialog} onDismiss={this.resetDialog}>
-          <Dialog.Title>About</Dialog.Title>
+          <Dialog.Title>Settings</Dialog.Title>
           <Dialog.Content style={styles.dialogContainer}>
+            <Caption style={{color: Colors.tintColor, textAlign: "right", marginTop: -50}}>
+              myWam For Android
+            </Caption>
+            <Caption style={{color: Colors.tintColor, textAlign: "right"}}>
+              Atude (Mozamel Anwary) © {new Date().getFullYear()} {'\n\n'}
+            </Caption>
+            {getFirebase.auth().currentUser ? 
             <Button 
-                mode="text"
-                color={Colors.tintColor}
-                onPress={signOut}
-              >
+              mode="text"
+              color={Colors.tintColor}
+              onPress={signOut}
+            >
               Sign out from {getFirebase.auth().currentUser.email}
             </Button>
+            : 
+            <Button 
+              mode="text"
+              color={Colors.tintColor}
+              onPress={this.enableLogin}
+            >
+              Login/Signup and Save marks online
+            </Button>
+            }
             <Button 
                 mode="text"
                 icon="rate-review"
                 color={Colors.tintColor}
                 onPress={() => Linking.openURL("https://play.google.com/store/apps/details?id=com.atude.mywam")}
               >
-              Leave a review!
+              Leave a review
             </Button>
 
-            <Caption style={{color: Colors.tintColor}}>
-              {'\n'}myWam For Android
-            </Caption>
-            <Caption style={{color: Colors.tintColor}}>
-              Atude / Mozamel Anwary © {new Date().getFullYear()} {'\n'}
-            </Caption>
-          
-            
-
-            <Subheading>{'\n'}Use existing WAM</Subheading>
+            <Subheading>{'\n\n'}Use existing WAM</Subheading>
             <Caption>
               Already have a WAM? Use your previous WAM without needing to add back your past courses. {'\n\n'}
               This will delete your progress for this term.{'\n'}

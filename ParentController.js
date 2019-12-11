@@ -1,14 +1,13 @@
 import React from 'react';
 import AppNavigator from './navigation/AppNavigator';
 
-import { Portal, FAB, Snackbar, IconButton, } from 'react-native-paper';
+import { Portal, FAB, Snackbar, } from 'react-native-paper';
 import { Platform, StatusBar, StyleSheet, View, AsyncStorage } from 'react-native';
 import DialogAddCourse from './components/DialogAddCourse';
 import DialogFinaliseTerm from './components/DialogFinaliseTerm';
 import DialogAddMark from './components/DialogAddMark';
 import DialogSettings from './components/DialogSettings';
 
-import Layout from './constants/Layout';
 import Colors from './constants/Colors';
 import getFirebase from './firebase/firebaseConfig';
 
@@ -53,20 +52,22 @@ export default class ParentController extends React.Component {
 
     //Get firebase save
     let getOnline = null;
-    getOnline = await getFirebase.firestore()
-    .collection("users")
-    .doc(this.props.email)
-    .get()
-    .then((doc) => {
-      if(doc.exists && 
-          !!doc.data().timestamp && !!timestamp &&
-          Number(doc.data().timestamp) > Number(timestamp))
-        return doc.data().terms;
-      else
-        return null
-    }).catch((error) => {
-      console.log(error.message);
-    });
+    if(this.props.email) {
+      getOnline = await getFirebase.firestore()
+      .collection("users")
+      .doc(this.props.email)
+      .get()
+      .then((doc) => {
+        if(doc.exists && 
+            !!doc.data().timestamp && !!timestamp &&
+            Number(doc.data().timestamp) > Number(timestamp))
+          return doc.data().terms;
+        else
+          return null
+      }).catch((error) => {
+        console.log(error.message);
+      });
+    }
     
     //If online exists and is newer
     if(getOnline != null) {
@@ -106,13 +107,16 @@ export default class ParentController extends React.Component {
 
       await AsyncStorage.setItem('terms', JSON.stringify(terms));
       await AsyncStorage.setItem('timestamp', timestamp);
-      await getFirebase.firestore()
-      .collection("users")
-      .doc(this.props.email)
-      .set({
-        terms: terms,
-        timestamp: timestamp
-      })
+      if(this.props.email) {
+        await getFirebase.firestore()
+        .collection("users")
+        .doc(this.props.email)
+        .set({
+          terms: terms,
+          timestamp: timestamp
+        });
+      }
+   
       console.log("Saved.");
     } catch (error) {
       console.log("Bad Save");
@@ -352,6 +356,7 @@ export default class ParentController extends React.Component {
           action={this.addExistingWam} 
           isDialog={isDialogSettings}
           setSnackbar={this.setSnackbar}
+          handleSetSkipAccount={this.props.handleSetSkipAccount}
         />
         <Snackbar
           theme={{ colors: { accent: Colors.tintLight }}}

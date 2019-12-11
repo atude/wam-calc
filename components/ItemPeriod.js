@@ -1,9 +1,7 @@
 import React from 'react';
-import { List, Divider, Text, Caption, Menu, } from 'react-native-paper';
-import { StyleSheet, } from 'react-native';
+import { List, Divider, } from 'react-native-paper';
+import { StyleSheet, View} from 'react-native';
 
-import Colors from '../constants/Colors.js';
-import { View } from 'native-base';
 import ItemTerm from './ItemTerm.js';
 
 export default class ItemPeriod extends React.Component {

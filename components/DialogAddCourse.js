@@ -1,14 +1,15 @@
 import React from 'react';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Portal, Dialog, TextInput, RadioButton, Subheading, Button } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Picker } from 'react-native';
 
 import Colors from '../constants/Colors.js';
-import { Picker } from 'native-base';
 
 const uocValues = [2,3,4,6,12];
-const iconValuesA = ["shape", "code-tags", "chart-areaspline", "math-compass", "database"];
-const iconValuesB = ["brush", "music-note", "basketball", "flask", "worker"];
+const iconValuesA = ["code-tags", "database", "dns", "chart-areaspline", "math-compass"];
+const iconValuesB = [ "flask", "earth", "bank", "camera", "shape"];
+const iconValuesC = ["brush", "music-note", "basketball",  "account-group", "worker", ];
+
 
 export default class DialogAddCourse extends React.Component {
   state = {
@@ -89,6 +90,15 @@ export default class DialogAddCourse extends React.Component {
               <View style={styles.IconRadioContainer}>
                 <View style={styles.IconHeading}/>
                 {iconValuesB.map(icon => (
+                  <View key={`uoc_li_${icon}`} style={styles.IconRadioPicker}>
+                    <RadioButton value={icon}/>
+                    <MaterialCommunityIcons size={20} name={icon}/>
+                  </View>
+                ))}
+              </View>
+              <View style={styles.IconRadioContainer}>
+                <View style={styles.IconHeading}/>
+                {iconValuesC.map(icon => (
                   <View key={`uoc_li_${icon}`} style={styles.IconRadioPicker}>
                     <RadioButton value={icon}/>
                     <MaterialCommunityIcons size={20} name={icon}/>

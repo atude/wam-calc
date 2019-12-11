@@ -1,9 +1,8 @@
 import React from 'react';
 import { Portal, Dialog, TextInput, Button, Subheading, Headline, Caption, Checkbox, } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Picker } from 'react-native';
 
 import Colors from '../constants/Colors.js';
-import { Picker } from 'native-base';
 
 export default class DialogAddMark extends React.Component {
   state = {

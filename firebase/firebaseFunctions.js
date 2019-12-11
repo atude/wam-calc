@@ -6,7 +6,7 @@ export const signInEmail = async (email, password) => {
   return await getFirebase.auth().signInWithEmailAndPassword(email, password)
   .catch(error => {
     const { code, message } = error;
-    console.error(message);
+    console.log(message);
     return(message);
   });
 }
@@ -24,7 +24,7 @@ export const createAccount = async (email, password) => {
   })
   .catch((error) => {
     const { code, message } = error;
-    console.error(message);
+    console.log(message);
     return(message);
   });
 }

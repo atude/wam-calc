@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { View, Picker, } from 'native-base';
+import { StyleSheet, View, Picker, } from 'react-native';
 import { Text, Subheading, TextInput, Caption } from 'react-native-paper';
 
 import Colors from '../constants/Colors.js';
@@ -96,7 +95,7 @@ export default class RequirementsScreen extends React.Component {
           <Subheading style={styles.courseHeading}>Select Course</Subheading>
           <View style={styles.inputContainer}>
             <Picker
-              style={{height: 65}}
+              style={{height: 65, flex: 1}}
               mode="dropdown"
               selectedValue={course}
               onValueChange={(itemValue, itemIndex) => {setTimeout(() => 
@@ -137,16 +136,16 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderRadius: 5,
     margin: 30,
-    paddingBottom: 40,
+    paddingBottom: 30,
   },
   subheadingText: {
-    fontSize: 18,
+    fontSize: 16,
     textAlign: 'center',
-    marginTop: 40,
+    marginTop: 30,
     color: Colors.grey
   },
   levelText: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold'
   },
   textInputWeight: {
