@@ -3,9 +3,11 @@ import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import Colors from './constants/Colors';
 import ParentController from './ParentController';
 import getFirebase from './firebase/firebaseConfig';
-import LoadingItem from './components/LoadingItem';
 import LoginScreen from './screens/LoginScreen';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, } from 'react-native';
+import { AppLoading } from 'expo';
+import { Asset } from 'expo-asset';
+
 
 const theme = {
   ...DefaultTheme,
@@ -26,35 +28,43 @@ export default function App(props) {
     setSkipAccount(setSkip);
   }
 
-  AsyncStorage.getItem("skipAccount")
-  .then((isCheckSkip) => {
+  const initLoad = async () => {
+    const cacheLogo = await Asset.fromModule(require('./assets/images/loginicon.png')).downloadAsync();
+
+    const isCheckSkip = await AsyncStorage.getItem("skipAccount");
     if(isCheckSkip == "true") {
       setSkipAccount("true");
     }
 
     console.log("isCheckSkip: " + isCheckSkip);
-  });
- 
-  getFirebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      setUser(user);
-      console.log("Auth state changed => " + user.email);
-    } else {
-      setUser(null);
-    }
 
-    setIsMainLoading(false);
-  });
+    getFirebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+        console.log("Auth state changed => " + user.email);
+      } else {
+        setUser(null);
+      }
+    });
+  } 
+ 
+  if(isMainLoading == "true") {
+    return (
+      <AppLoading
+        startAsync={initLoad}
+        onFinish={() => setIsMainLoading("false")}
+        onError={console.warn}    
+      />
+    );
+  }
 
   return (
-    <>
+    <PaperProvider theme={theme}>
     {(!user && skipAccount == "false") ?
-      <LoginScreen isMainLoading={isMainLoading} handleSetSkipAccount={handleSetSkipAccount}/> 
+      <LoginScreen handleSetSkipAccount={handleSetSkipAccount}/> 
       :
-      <PaperProvider theme={theme}>
-        <ParentController email={user ? user.email : null} handleSetSkipAccount={handleSetSkipAccount}/>
-      </PaperProvider>
+      <ParentController email={user ? user.email : null} handleSetSkipAccount={handleSetSkipAccount}/>
     }
-    </>
+    </PaperProvider>
   );
 }
