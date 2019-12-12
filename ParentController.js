@@ -99,27 +99,28 @@ export default class ParentController extends React.Component {
       bestWorst: bestWorst,
     })
 
-    try {
-      //Timestamp needed for data syncing
-      const timestamp = new Date().valueOf().toString();
+    // try {
+    //   //Timestamp needed for data syncing
+    //   const timestamp = new Date().valueOf().toString();
 
-      await AsyncStorage.setItem('terms', JSON.stringify(terms));
-      await AsyncStorage.setItem('timestamp', timestamp);
-      if(this.props.email) {
-        await getFirebase.firestore()
-        .collection("users")
-        .doc(this.props.email)
-        .set({
-          terms: terms,
-          timestamp: timestamp
-        });
-      }
+    //   await AsyncStorage.setItem('terms', JSON.stringify(terms));
+    //   await AsyncStorage.setItem('timestamp', timestamp);
+    //   if(this.props.email) {
+    //     await getFirebase.firestore()
+    //     .collection("users")
+    //     .doc(this.props.email)
+    //     .set({
+    //       terms: terms,
+    //       timestamp: timestamp
+    //     });
+    //     console.log("Saved.");
+    //   }
    
-      console.log("Saved.");
-    } catch (error) {
-      console.log("Bad Save");
-      console.log(error);
-    }
+    //   console.log("Saved.");
+    // } catch (error) {
+    //   console.log("Bad Save");
+    //   console.log(error);
+    // }
   }
 
   addMark = (name, mark, weight, courseIndex) => {
@@ -186,11 +187,12 @@ export default class ParentController extends React.Component {
     let termWam = 0;
 
     Object.keys(terms).map(termKey => (
-      terms[termKey].map(course => course.marks.length !== 0 && (uocParentTotal += parseInt(course.uoc)))
+      terms[termKey].map(course => course.marks.length !== 0 && (uocParentTotal += Number(course.uoc)))
     ));
     
     Object.keys(terms).map(termKey => (
-      terms[termKey].map(course => course.marks.length !== 0 && (uocTotal += parseInt(course.uoc))),
+      uocTotal = 0,
+      terms[termKey].map(course => course.marks.length !== 0 && (uocTotal += Number(course.uoc))),
       
       currentCourseTotals = [],
       terms[termKey].map(course => (
@@ -198,8 +200,8 @@ export default class ParentController extends React.Component {
         weightTotal = 0,
   
         course.marks.map(mark => (
-          avTotal += parseFloat(mark.mark) * parseFloat(mark.weight)/100,
-          weightTotal += parseFloat(mark.weight)
+          avTotal += Number(mark.mark) * Number(mark.weight)/100,
+          weightTotal += Number(mark.weight)
         )),
   
         course.marks.length !== 0 && (

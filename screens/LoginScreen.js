@@ -48,74 +48,60 @@ export default function LoginScreen(props) {
   return (    
     <View style={styles.container}>
       <Image style={styles.loginIcon} source={require('../assets/images/loginicon.png')} />
-      
-      {props.isMainLoading ? 
-        <LoadingItem isLoading={true}/>
-      :
-        (
-          <>
-          <TextInput
-            style={styles.inputMain}
-            label="Email"
-            textContentType="emailAddress"
-            value={credentials.email}
-            onChangeText={(value) => setCredentials({...credentials, email: value})}
-            error={err ? true : false}
-          />
-          <TextInput
-            style={styles.inputMain}
-            label="Password"
-            textContentType="password"
-            secureTextEntry={true}
-            value={credentials.password}
-            onChangeText={(value) => setCredentials({...credentials, password: value})}
-            error={err ? true : false}
-          />
-          <Text
-            type="error"
-            style={styles.errorText}
-          >
-            {err}
-          </Text>
-          {isSignup ? 
-            <View>
-              <Button 
-                style={styles.buttonMain} 
-                mode="outlined" 
-                onPress={handleSignUp}>
-                  Sign Up
-              </Button>
-              <Text 
-                style={styles.switchTypeText} 
-                onPress={() => setIsSignup(false)}>
-                  Already have an account? Login instead
-              </Text>
-            </View>
-            :
-            <View>
-              <Button 
-                style={styles.buttonMain} 
-                mode="outlined" 
-                onPress={handleSignIn}>
-                  Login
-              </Button>
-              <Text 
-                style={styles.switchTypeText} 
-                onPress={() => setIsSignup(true)}>
-                  Dont have an account? Sign up instead
-              </Text>
-            </View>
-          }
-          <Text 
-            style={styles.switchTypeTextSkip} 
-            onPress={handleSkipSignIn}>
-              Skip sign in
-          </Text>
-          <LoadingItem isLoading={isLoading}/>
-          </>
-        )
-      }
-      
+        <TextInput
+          style={styles.inputMain}
+          label="Email"
+          textContentType="emailAddress"
+          value={credentials.email}
+          onChangeText={(value) => setCredentials({...credentials, email: value})}
+          error={err ? true : false}
+        />
+        <TextInput
+          style={styles.inputMain}
+          label="Password"
+          textContentType="password"
+          secureTextEntry={true}
+          value={credentials.password}
+          onChangeText={(value) => setCredentials({...credentials, password: value})}
+          error={err ? true : false}
+        />
+        <Text type="error" style={styles.errorText}>{err}</Text>
+        {isSignup ? 
+          (<View>
+            <Button 
+              style={styles.buttonMain} 
+              mode="outlined" 
+              onPress={handleSignUp}>
+                Sign Up
+            </Button>
+            <Text 
+              style={styles.switchTypeText} 
+              onPress={() => setIsSignup(false)}>
+                Already have an account? Login instead
+            </Text>
+          </View>
+          ) : (
+          <View>
+            <Button 
+              style={styles.buttonMain} 
+              mode="outlined" 
+              onPress={handleSignIn}>
+                Login
+            </Button>
+            <Text 
+              style={styles.switchTypeText} 
+              onPress={() => setIsSignup(true)}>
+                Dont have an account? Sign up instead
+            </Text>
+          </View>
+          )
+        }
+      <Text 
+        style={styles.switchTypeTextSkip} 
+        onPress={handleSkipSignIn}>
+          Skip sign in
+      </Text>
+      <LoadingItem isLoading={isLoading}/>
     </View>
   );
 };
