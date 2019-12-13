@@ -15,6 +15,8 @@ export default function LoginScreen(props) {
   const [err, setError] = useState("");
   const [isSignup, setIsSignup] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLogoLoading, setIsLogoLoading] = useState(true);
+
 
   const handleSkipSignIn = () => {
     props.handleSetSkipAccount(1);
@@ -45,9 +47,21 @@ export default function LoginScreen(props) {
     setIsLoading(false);
   }
 
+  
+
   return (    
     <View style={styles.container}>
-      <Image style={styles.loginIcon} source={require('../assets/images/loginicon.png')} />
+      <Image 
+        style={styles.loginIcon} 
+        source={require('../assets/images/loginicon.png')} 
+        onLoadEnd={() => setTimeout(() => {
+          setIsLogoLoading(false)
+        }, 1000)} 
+      />
+      {props.isMainLoading || isLogoLoading ? 
+      <LoadingItem isLoading={true}/>
+      :    
+      <>
         <TextInput
           style={styles.inputMain}
           label="Email"
@@ -67,10 +81,10 @@ export default function LoginScreen(props) {
         />
         <Text type="error" style={styles.errorText}>{err}</Text>
         {isSignup ? 
-          (<View>
+          <View>
             <Button 
               style={styles.buttonMain} 
-              mode="outlined" 
+              mode="contained" 
               onPress={handleSignUp}>
                 Sign Up
             </Button>
@@ -80,11 +94,11 @@ export default function LoginScreen(props) {
                 Already have an account? Login instead
             </Text>
           </View>
-          ) : (
+           : 
           <View>
             <Button 
               style={styles.buttonMain} 
-              mode="outlined" 
+              mode="contained" 
               onPress={handleSignIn}>
                 Login
             </Button>
@@ -94,7 +108,6 @@ export default function LoginScreen(props) {
                 Dont have an account? Sign up instead
             </Text>
           </View>
-          )
         }
       <Text 
         style={styles.switchTypeTextSkip} 
@@ -102,6 +115,8 @@ export default function LoginScreen(props) {
           Skip sign in
       </Text>
       <LoadingItem isLoading={isLoading}/>
+      </>
+      }
     </View>
   );
 };
@@ -112,7 +127,7 @@ LoginScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.tintColor,
+    backgroundColor: "#fff",
     alignItems: "stretch",
     justifyContent: "center",
     height: "100%",
@@ -122,12 +137,12 @@ const styles = StyleSheet.create({
   buttonMain: {
     margin: 6,
     padding: 8,
-    backgroundColor: "#fff",
-    color: Colors.tintColor
+    backgroundColor: Colors.tintColor,
+    color: "#fff",
   },
   switchTypeText: {
     flexWrap: "wrap",
-    color: "#fff",
+    color: Colors.tintColor,
     paddingTop: 20,
     textAlign: "center",
     textDecorationLine: "underline",
@@ -151,6 +166,6 @@ const styles = StyleSheet.create({
   errorText: {
     textAlign: "center",
     padding: 10,
-    color: Colors.warningBackground
+    color: Colors.errorBackground
   }
 });

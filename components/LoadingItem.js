@@ -8,7 +8,7 @@ export default function LoadingItem(props) {
     <ActivityIndicator 
       style={styles.indicator} 
       animating={props.isLoading} 
-      color={"#fff"} 
+      color={Colors.tintColor} 
       size="large"
     />
   );
