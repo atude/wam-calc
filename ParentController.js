@@ -99,28 +99,28 @@ export default class ParentController extends React.Component {
       bestWorst: bestWorst,
     })
 
-    // try {
-    //   //Timestamp needed for data syncing
-    //   const timestamp = new Date().valueOf().toString();
+    try {
+      //Timestamp needed for data syncing
+      const timestamp = new Date().valueOf().toString();
 
-    //   await AsyncStorage.setItem('terms', JSON.stringify(terms));
-    //   await AsyncStorage.setItem('timestamp', timestamp);
-    //   if(this.props.email) {
-    //     await getFirebase.firestore()
-    //     .collection("users")
-    //     .doc(this.props.email)
-    //     .set({
-    //       terms: terms,
-    //       timestamp: timestamp
-    //     });
-    //     console.log("Saved.");
-    //   }
+      await AsyncStorage.setItem('terms', JSON.stringify(terms));
+      await AsyncStorage.setItem('timestamp', timestamp);
+      if(this.props.email) {
+        await getFirebase.firestore()
+        .collection("users")
+        .doc(this.props.email)
+        .set({
+          terms: terms,
+          timestamp: timestamp
+        });
+        console.log("Saved.");
+      }
    
-    //   console.log("Saved.");
-    // } catch (error) {
-    //   console.log("Bad Save");
-    //   console.log(error);
-    // }
+      console.log("Saved.");
+    } catch (error) {
+      console.log("Bad Save");
+      console.log(error);
+    }
   }
 
   addMark = (name, mark, weight, courseIndex) => {
