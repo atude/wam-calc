@@ -22,46 +22,36 @@ const theme = {
 export default function App(props) {
   const [user, setUser] = useState(null);
   const [skipAccount, setSkipAccount] = useState("false");
-  const [isMainLoading, setIsMainLoading] = useState("true");
+  const [isMainLoading, setIsMainLoading] = useState(true);
 
   const handleSetSkipAccount = (setSkip) => {
     setSkipAccount(setSkip);
   }
 
-  const initLoad = async () => {
-    const cacheLogo = await Asset.fromModule(require('./assets/images/loginicon.png')).downloadAsync();
-
-    const isCheckSkip = await AsyncStorage.getItem("skipAccount");
+  AsyncStorage.getItem("skipAccount").then((isCheckSkip) => {
     if(isCheckSkip == "true") {
       setSkipAccount("true");
     }
 
     console.log("isCheckSkip: " + isCheckSkip);
+  })
+  
+  getFirebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      setUser(user);
+      console.log("Auth state changed => " + user.email);
+    } else {
+      setUser(null);
+    }
 
-    getFirebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-        console.log("Auth state changed => " + user.email);
-      } else {
-        setUser(null);
-      }
-    });
-  } 
- 
-  if(isMainLoading == "true") {
-    return (
-      <AppLoading
-        startAsync={initLoad}
-        onFinish={() => setIsMainLoading("false")}
-        onError={console.warn}    
-      />
-    );
-  }
+    setIsMainLoading(false);
+  });
+
 
   return (
     <PaperProvider theme={theme}>
     {(!user && skipAccount == "false") ?
-      <LoginScreen handleSetSkipAccount={handleSetSkipAccount}/> 
+      <LoginScreen isMainLoading={isMainLoading} handleSetSkipAccount={handleSetSkipAccount}/> 
       :
       <ParentController email={user ? user.email : null} handleSetSkipAccount={handleSetSkipAccount}/>
     }

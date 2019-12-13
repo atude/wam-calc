@@ -5,15 +5,14 @@
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [
-      "ios",
       "android"
     ],
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#3d348b"
+      "backgroundColor": "#ffffff"
     },
-    "version": "1.5.3",
+    "version": "1.5.4",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "updates": {
@@ -22,13 +21,10 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "bundleIdentifier": "com.atude.mywam"
-    },
     "description": "A WAM calculator and course log.",
     "android": {
       "package": "com.atude.mywam",
-      "versionCode": 11
+      "versionCode": 12
     }
   }
 }
