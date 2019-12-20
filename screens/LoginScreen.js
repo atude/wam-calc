@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { Button, Text, TextInput, } from 'react-native-paper';
 import { signInEmail, createAccount } from '../firebase/firebaseFunctions';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import LoadingItem from '../components/LoadingItem';
 import Colors from '../constants/Colors';
 
@@ -117,6 +118,20 @@ export default function LoginScreen(props) {
       <LoadingItem isLoading={isLoading}/>
       </>
       }
+      <View style={styles.firebaseTextContainer}>
+        <View>
+          <Button disabled mode="text">
+            Powered by Firebase
+          </Button>
+        </View>
+        <View>
+          <MaterialCommunityIcons
+            name="firebase"
+            size={30}
+            color="#959595"
+          />
+        </View>
+      </View>
     </View>
   );
 };
@@ -127,6 +142,7 @@ LoginScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: "#fff",
     alignItems: "stretch",
     justifyContent: "center",
@@ -153,6 +169,7 @@ const styles = StyleSheet.create({
     color: "#959595",
     paddingTop: 20,
     textAlign: "center",
+    textDecorationLine: "underline",
     fontSize: 15,
   },
   inputMain: {
@@ -167,5 +184,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     padding: 10,
     color: Colors.errorBackground
+  },
+  firebaseTextContainer: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    position: "absolute",
+    bottom: 0,
+    marginBottom: 20,
+    alignItems: "center",
+    alignSelf: "center",
   }
 });
