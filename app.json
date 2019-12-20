@@ -12,7 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "version": "1.6",
+    "version": "1.6.5",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "updates": {
@@ -24,7 +24,7 @@
     "description": "A WAM calculator and course log.",
     "android": {
       "package": "com.atude.mywam",
-      "versionCode": 14
+      "versionCode": 15
     }
   }
 }

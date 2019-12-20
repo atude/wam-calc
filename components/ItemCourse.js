@@ -90,7 +90,7 @@ export default class ItemCourse extends React.Component {
           anchor={
             <View style={[styles.sideContent, {borderLeftColor: markRank[1]}]}>
               <Title style={[styles.markAverageText, {color: markRank[1]}]}>
-                {totalAv.toFixed(1)}
+                {totalAv.toFixed(0)}
               </Title>
               <Title style={[styles.markAverageText, {color: markRank[1]}]}>
                 {markRank[0]}

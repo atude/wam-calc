@@ -10,6 +10,7 @@ import DialogSettings from './components/DialogSettings';
 
 import Colors from './constants/Colors';
 import getFirebase from './firebase/firebaseConfig';
+import Layout from './constants/Layout';
 
 export default class ParentController extends React.Component {
   state = {
@@ -190,29 +191,33 @@ export default class ParentController extends React.Component {
       terms[termKey].map(course => course.marks.length !== 0 && (uocParentTotal += Number(course.uoc)))
     ));
     
-    Object.keys(terms).map(termKey => (
-      uocTotal = 0,
-      terms[termKey].map(course => course.marks.length !== 0 && (uocTotal += Number(course.uoc))),
+    Object.keys(terms).map(termKey => {
+      uocTotal = 0;
+      terms[termKey].map(course => course.marks.length !== 0 && (uocTotal += Number(course.uoc)));
       
       currentCourseTotals = [],
-      terms[termKey].map(course => (
+      terms[termKey].map(course => {
         avTotal = 0,
         weightTotal = 0,
   
-        course.marks.map(mark => (
-          avTotal += Number(mark.mark) * Number(mark.weight)/100,
-          weightTotal += Number(mark.weight)
-        )),
+        course.marks.map(mark => {
+          avTotal += Number(mark.mark) * Number(mark.weight)/100;
+          weightTotal += Number(mark.weight);
+        });
   
-        course.marks.length !== 0 && (
-          courseTotals.push((avTotal / weightTotal * 100) * (course.uoc)),
-          currentCourseTotals.push((avTotal / weightTotal * 100) * (course.uoc / uocTotal))
-        )
-      )),
+        if (course.marks.length !== 0) {
+          //--> Round this value to get UNSW WAM
+          const weightedMark = Math.round(avTotal / weightTotal * 100);
 
-      termKey === "CurrentTerm" && 
-        (termWam = currentCourseTotals.reduce(((prev, curr) => prev + curr), 0).toFixed(2))
-    ));
+          courseTotals.push(weightedMark * course.uoc);
+          currentCourseTotals.push(weightedMark * course.uoc / uocTotal);
+        };
+      });
+
+      if (termKey === "CurrentTerm") {
+        termWam = currentCourseTotals.reduce(((prev, curr) => prev + curr), 0).toFixed(2);
+      };
+    });
 
     wam = (courseTotals.reduce(((prev, curr) => prev + curr), 0) / uocParentTotal).toFixed(2);
 
@@ -360,7 +365,7 @@ export default class ParentController extends React.Component {
         />
         <Snackbar
           theme={{ colors: { accent: Colors.tintLight }}}
-          style={{marginBottom: 75, marginRight: 80}}
+          style={styles.snackbar}
           duration={Snackbar.DURATION_SHORT}
           visible={isSnackbar}
           onDismiss={() => this.setState({ isSnackbar: false })}
@@ -386,5 +391,8 @@ const styles = StyleSheet.create({
   fab: {
     paddingBottom: 55,
   },
- 
+  snackbar: {
+    position: "absolute",
+    bottom: Layout.window.height - Layout.window.height / 9,
+  },
 });
