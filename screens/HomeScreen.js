@@ -3,7 +3,7 @@ import { StyleSheet, View, } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 import Colors from '../constants/Colors';
-import { Paragraph, Title, Text, ProgressBar, Divider, List, IconButton } from 'react-native-paper';
+import { Title, Text, ProgressBar, Divider, List, IconButton } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
 import Layout from '../constants/Layout';
 

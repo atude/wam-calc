@@ -2,11 +2,12 @@ import React from 'react';
 import { createAppContainer, createSwitchNavigator, createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 
-import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
+import MetricsScreen from '../screens/MetricsScreen';
 import SubjectsScreen from '../screens/SubjectsScreen';
 import RequirementsScreen from '../screens/RequirementsScreen';
 
+import TabBarIcon from '../components/TabBarIcon';
 import Colors from '../constants/Colors.js';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Headline } from 'react-native-paper';
@@ -28,6 +29,36 @@ HomeStack.navigationOptions = {
   ),
 };
 
+const MetricsStack = createStackNavigator({
+  Metrics: {
+    screen: screenProps => <MetricsScreen data={screenProps} style={{backgroundColor: Colors.tintColor}}/>,
+    navigationOptions: () => ({
+      headerStyle: {
+        backgroundColor: Colors.tintColor,
+      },
+      headerTitle: 
+        <View style={{flexDirection: "row"}}>
+          <MaterialCommunityIcons 
+            size={30} 
+            name={'chart-arc'} 
+            color={"#fff"}
+            style={{marginLeft: 14, alignSelf: "center"}}
+          />
+          <Headline style={{fontSize: 18, marginLeft: 10, color: "#fff"}}>
+            Performance
+          </Headline>
+        </View>
+    }),
+  }
+});
+
+MetricsStack.navigationOptions = {
+  tabBarLabel: 'Performance',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon focused={focused} name={'chart-arc'} />
+  ),
+};
+
 const SubjectsStack = createStackNavigator({
   Subjects: {
     screen: screenProps => <SubjectsScreen data={screenProps}/>,
@@ -42,7 +73,6 @@ const SubjectsStack = createStackNavigator({
             name={'book-open'} 
             color={"#fff"}
             style={{marginLeft: 14, alignSelf: "center"}}
-            title="Courses"
           />
           <Headline style={{fontSize: 18, marginLeft: 10, color: "#fff"}}>
             Courses
@@ -53,7 +83,7 @@ const SubjectsStack = createStackNavigator({
 });
 
 SubjectsStack.navigationOptions = {
-  tabBarLabel: 'My Courses',
+  tabBarLabel: 'Courses',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={'book-open'}/>
   ),
@@ -73,7 +103,6 @@ const RequirementsStack = createStackNavigator({
             name={'checkbox-multiple-marked-circle'} 
             color={"#fff"}
             style={{marginLeft: 14, alignSelf: "center"}}
-            title="Mark Requirements"
           />
           <Headline style={{fontSize: 18, marginLeft: 10, color: "#fff"}}>
             Mark Requirements
@@ -84,7 +113,7 @@ const RequirementsStack = createStackNavigator({
 });
 
 RequirementsStack.navigationOptions = {
-  tabBarLabel: 'Mark Requirements',
+  tabBarLabel: 'Requirements',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={'checkbox-multiple-marked-circle'}/>
   ),
@@ -94,6 +123,7 @@ const MainTabNavigator = createMaterialBottomTabNavigator(
   {
     Home: HomeStack,
     Subjects: SubjectsStack,
+    Metrics: MetricsStack,
     Requirements: RequirementsStack
   },
   {
