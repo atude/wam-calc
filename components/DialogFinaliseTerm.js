@@ -14,7 +14,6 @@ export default class DialogFinaliseTerm extends React.Component {
   setDialog = () => {
     const year = new Date().getFullYear();
     let name = `${year} | ${this.state.dialogTermPeriod}`.toString();
-    console.log(name);
     this.props.action(name);
     this.resetDialog();
   }

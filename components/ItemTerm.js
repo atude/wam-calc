@@ -27,7 +27,7 @@ export default class ItemTerm extends React.Component {
             anchor={
               <List.Subheader 
                 style={{color: Colors.tintColor}}>
-                {keyV === "CurrentTerm" ? "Current Term" : `${keyV}  | ${calcWam({keyV: terms[keyV]})[0]} Term WAM`}  
+                {keyV === "CurrentTerm" ? "Current Term" : `${keyV} | ${calcWam({keyV: terms[keyV]})[0]} Term WAM`}  
               </List.Subheader>
             }
           >

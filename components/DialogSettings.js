@@ -14,7 +14,6 @@ export default class DialogSettings extends React.Component {
   enableLogin = async () => {
     await AsyncStorage.setItem("skipAccount", "false");
     this.props.handleSetSkipAccount("false");
-    console.log("not skippin acount now");
   }
 
   setDialog = () => { 

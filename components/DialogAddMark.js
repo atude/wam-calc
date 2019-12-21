@@ -81,13 +81,6 @@ export default class DialogAddMark extends React.Component {
     let finalAssessmentMark = courseTotal - marks.reduce((a, b) => a + (Number(b.weight) / 100) * Number(b.mark), 0);
     finalAssessmentMark = finalAssessmentMark / remainingWeight * 100;
 
-    console.log(remainingWeight);
-    console.log(finalAssessmentMark);
-
-    if(marks.length) {
-      
-    }
-
     if(finalAssessmentMark < 0) finalAssessmentMark = 0;
     if(finalAssessmentMark > 100) finalAssessmentMark = 100;
 

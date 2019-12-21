@@ -142,8 +142,6 @@ export default class MetricsScreen extends React.Component {
       });
     });
 
-    console.log(dataMarks);
-
     return (
       <ScrollView style={styles.container}>
         <Card style={styles.performanceCard}>
