@@ -79,16 +79,26 @@ export default class ParentController extends React.Component {
       if(get === undefined || Object.keys(get).length === 0) {
         get = {"CurrentTerm": []};
       }
+
+      console.log(get);
     }
 
-    this.setSave(get, get.CurrentTerm);
-    console.log(get);
+    console.log("Loaded");
 
+    //Dont save to file, but set state
+    let wams = this.calcWam(get);
+    let bestWorst = this.calcBestWorst(get.CurrentTerm);
+
+    this.setState({
+      terms: get,
+      currentCourses: get.CurrentTerm,
+      wam: wams[0],
+      termWam: wams[1],
+      bestWorst: bestWorst,
+    });
   }
 
   setSave = async (terms, currentCourses) => {
-    console.log(terms)
-
     let wams = this.calcWam(terms);
     let bestWorst = this.calcBestWorst(currentCourses);
 
@@ -114,10 +124,10 @@ export default class ParentController extends React.Component {
           terms: terms,
           timestamp: timestamp
         });
-        console.log("Saved.");
+        console.log("Saved to firebase");
       }
    
-      console.log("Saved.");
+      console.log("Saved");
     } catch (error) {
       console.log("Bad Save");
       console.log(error);

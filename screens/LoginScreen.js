@@ -21,7 +21,6 @@ export default function LoginScreen(props) {
 
   const handleSkipSignIn = () => {
     props.handleSetSkipAccount(1);
-    console.log("set to true");
   }
 
   const handleSignIn = async () => {

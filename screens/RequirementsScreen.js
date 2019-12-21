@@ -26,8 +26,6 @@ export default class RequirementsScreen extends React.Component {
       requirements[i] = ((requirement - weightedTotal) / this.state.markWeight * 100).toFixed(2);
     });
 
-    console.log("total: ", weightedTotal);
-    console.log("requirements: ", requirements);
     return requirements;
   }
 
@@ -37,8 +35,6 @@ export default class RequirementsScreen extends React.Component {
     let { currentCourses  } = getProps
     let { course, markWeight } = this.state;
     let requirements = this.getRequirements(currentCourses);
-
-    console.log(currentCourses);
 
     return (
       <View style={styles.container}>
