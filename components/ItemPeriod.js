@@ -95,7 +95,7 @@ export default class ItemPeriod extends React.Component {
             {Object.keys(terms).length > 1 &&
               <List.Section title="Completed Courses">
                 <Divider/>
-                {Object.keys(terms).filter(key => key !== "CurrentTerm").reverse().map((key, i) => (
+                {Object.keys(terms).filter(key => key !== "CurrentTerm").sort().reverse().map((key, i) => (
                   <ItemTerm calcWam={calcWam} key={`_${key}_${i}`} terms={terms} deleteHandler={deleteHandler} keyV={key}/>
                 ))} 
               </List.Section>
