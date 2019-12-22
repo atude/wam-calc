@@ -68,6 +68,7 @@ export default class MetricsScreen extends React.Component {
   } 
 
   render() {
+    const chartWidth = Layout.window.width;
     const getProps = this.props.data.screenProps;
     let { calcWam, terms } = getProps;
     let dataTerm = {
@@ -155,7 +156,7 @@ export default class MetricsScreen extends React.Component {
             <View style={styles.chartContainer}>
               <PieChart
                 data={dataMarks}
-                width={Layout.window.width - 80}
+                width={chartWidth}
                 height={230}
                 chartConfig={chartConfig}
                 accessor="i"
@@ -165,7 +166,7 @@ export default class MetricsScreen extends React.Component {
               <PieChart
                 style={{position: "absolute", marginTop: 55}}
                 data={dummyCircle}
-                width={Layout.window.width - 80}
+                width={chartWidth}
                 height={200}
                 chartConfig={chartConfig}
                 accessor="i"
@@ -190,7 +191,7 @@ export default class MetricsScreen extends React.Component {
               {dataCumulative?.datasets[0]?.data?.length > 1 ?
                 <LineChart
                   data={dataCumulative}
-                  width={Layout.window.width - 80}
+                  width={chartWidth}
                   height={230}
                   chartConfig={chartConfig}
                   formatXLabel={(label) => this.formatX(label)}
@@ -218,7 +219,7 @@ export default class MetricsScreen extends React.Component {
               {dataTerm?.datasets[0]?.data?.length > 1 ?
                 <LineChart
                   data={dataTerm}
-                  width={Layout.window.width - 80}
+                  width={chartWidth}
                   height={230}
                   chartConfig={chartConfig}
                   formatXLabel={(label) => this.formatX(label)}
@@ -259,5 +260,7 @@ const styles = StyleSheet.create({
   chartContainer: {
     flex: 1, 
     paddingTop: 40,
+    marginLeft: -20,
+    overflow: "hidden",
   }
 });
