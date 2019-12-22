@@ -43,7 +43,6 @@ export default class ItemTerm extends React.Component {
             left={props => <List.Icon {...props} icon="info"/>}
           />
           :
-          //Reverse so its in order with newest at top
           Object.values(terms[keyV]).map((course, i) => (
             <ItemCourse
               key={`_${course}_${i}`} 
