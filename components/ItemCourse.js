@@ -78,7 +78,7 @@ export default class ItemCourse extends React.Component {
                 thisStyle={styles.listMark} 
                 mark={mark} 
                 deleteHandler={this.props.deleteHandler}
-                path={path.concat(i)}
+                path={path ? path.concat(i) : null}
               />
             ))
           }
@@ -95,7 +95,7 @@ export default class ItemCourse extends React.Component {
               <Title style={[styles.markAverageText, {color: markRank[1]}]}>
                 {markRank[0]}
               </Title>
-              {path[0] === "CurrentTerm" ?
+              {path && path[0] === "CurrentTerm" ?
                 <IconButton
                   icon="more-horiz"
                   size={Layout.iconSize}

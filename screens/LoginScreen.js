@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import { Button, Text, TextInput, } from 'react-native-paper';
+import { Button, Text, TextInput, Headline, } from 'react-native-paper';
 import { signInEmail, createAccount } from '../firebase/firebaseFunctions';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import LoadingItem from '../components/LoadingItem';
@@ -52,9 +52,10 @@ export default function LoginScreen(props) {
   return (    
     <View style={styles.container}>
       <Image 
+        resizeMode="center"
         style={styles.loginIcon} 
         source={require('../assets/images/loginicon.png')} 
-        onLoadEnd={() => setTimeout(() => {
+        onLoad={() => setTimeout(() => {
           setIsLogoLoading(false)
         }, 1000)} 
       />
@@ -176,8 +177,8 @@ const styles = StyleSheet.create({
   },
   loginIcon: {
     alignSelf: "center",
-    resizeMode: "center",
-    marginTop: -75,
+    marginBottom: -75,
+    marginTop: -10,
   },
   errorText: {
     textAlign: "center",

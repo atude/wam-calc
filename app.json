@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "myWAM",
+    "name": "Unicore",
     "slug": "wam-calc",
     "privacy": "public",
     "sdkVersion": "36.0.0",
@@ -12,7 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "version": "1.6.6",
+    "version": "1.7",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "updates": {
@@ -21,10 +21,10 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "description": "A WAM calculator and course log.",
+    "description": "A multi-purpose tool to track univerity progress",
     "android": {
       "package": "com.atude.mywam",
-      "versionCode": 16
+      "versionCode": 17
     }
   }
 }

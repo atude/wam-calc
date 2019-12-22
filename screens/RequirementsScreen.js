@@ -3,6 +3,7 @@ import { StyleSheet, View, Picker, } from 'react-native';
 import { Text, Subheading, TextInput, Caption } from 'react-native-paper';
 
 import Colors from '../constants/Colors.js';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default class RequirementsScreen extends React.Component {
   state = {
@@ -37,7 +38,7 @@ export default class RequirementsScreen extends React.Component {
     let requirements = this.getRequirements(currentCourses);
 
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <View style={styles.viewContainer}>
           <Subheading style={styles.subheadingText}>
             {requirements[3] > 100 && "You cannot HD at this stage."}
@@ -112,7 +113,8 @@ export default class RequirementsScreen extends React.Component {
             />
           </View>
         </View>
-      </View>
+        <View style={{margin: 50}}/>
+      </ScrollView>
     );
   }
 }
@@ -122,6 +124,7 @@ const styles = StyleSheet.create({
     flex: 1,
     color: Colors.tintColor,
     width: "100%",
+    height: "100%"
   },
   requirementsContainer: {
     padding: 10,
@@ -132,7 +135,7 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderRadius: 5,
     margin: 30,
-    paddingBottom: 30,
+    paddingBottom: 40,
   },
   subheadingText: {
     fontSize: 16,

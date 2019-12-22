@@ -1,5 +1,5 @@
 import React from 'react';
-import { Portal, Dialog, TextInput, Button, Subheading, Caption, Text } from 'react-native-paper';
+import { Portal, Dialog, TextInput, Button, Subheading, Caption, Text, IconButton } from 'react-native-paper';
 import { StyleSheet, View, Linking, AsyncStorage } from 'react-native';
 import Colors from '../constants/Colors.js';
 import getFirebase from '../firebase/firebaseConfig.js';
@@ -9,6 +9,7 @@ export default class DialogSettings extends React.Component {
   state = {
     dialogWam: "",
     dialogUoc: "",
+    showHelpDialog: false,
   }
 
   enableLogin = async () => {
@@ -43,9 +44,13 @@ export default class DialogSettings extends React.Component {
     })
   }
 
+  handleHelpDialog = () => {
+    this.setState({showHelpDialog: !this.state.showHelpDialog})
+  }
+
   render() {
     let { isDialog } = this.props;
-    let { dialogWam, dialogUoc, } = this.state;
+    let { dialogWam, dialogUoc, showHelpDialog } = this.state;
 
     return (
       <Portal>
@@ -53,7 +58,7 @@ export default class DialogSettings extends React.Component {
           <Dialog.Title>Settings</Dialog.Title>
           <Dialog.Content style={styles.dialogContainer}>
             <Caption style={{color: Colors.tintColor, textAlign: "right", marginTop: -50}}>
-              myWam For Android
+              Unicore For Android
             </Caption>
             <Caption style={{color: Colors.tintColor, textAlign: "right"}}>
               Atude (Mozamel Anwary) © {new Date().getFullYear()} {'\n\n'}
@@ -61,34 +66,52 @@ export default class DialogSettings extends React.Component {
             {getFirebase.auth().currentUser ? 
             <Button 
               mode="text"
+              icon="exit-to-app"
               color={Colors.tintColor}
               onPress={signOut}
+              compact
             >
-              Sign out from {getFirebase.auth().currentUser.email}
+              Sign out of {getFirebase.auth().currentUser.email.split("@")[0]}
             </Button>
             : 
             <Button 
               mode="text"
+              icon="account-circle"
               color={Colors.tintColor}
               onPress={this.enableLogin}
+              compact
             >
-              Login/Signup and Save marks online
+              Login/Signup to Unicore
             </Button>
             }
             <Button 
-                mode="text"
-                icon="rate-review"
-                color={Colors.tintColor}
-                onPress={() => Linking.openURL("https://play.google.com/store/apps/details?id=com.atude.mywam")}
-              >
+              mode="text"
+              compact
+              icon="rate-review"
+              color={Colors.tintColor}
+              onPress={() => Linking.openURL("https://play.google.com/store/apps/details?id=com.atude.mywam")}
+            >
               Leave a review
             </Button>
 
-            <Subheading>{'\n\n'}Use existing WAM</Subheading>
-            <Caption>
-              Already have a WAM? Use your previous WAM without needing to add back your past courses. {'\n\n'}
-              This will delete your progress for this term.{'\n'}
-            </Caption>
+            <View style={{marginTop: 20}}/>
+
+            <View style={styles.existingWamContainer}>
+              <Subheading>Use existing WAM</Subheading>
+              <IconButton 
+                icon="help"
+                color={showHelpDialog ? Colors.tintColor : Colors.grey}
+                onPress={() => this.handleHelpDialog()}
+              />
+            </View>
+
+            {showHelpDialog && 
+              <Caption>
+                Already have a WAM? Use your previous WAM without needing to add back your past courses. {'\n\n'}
+                This will delete your progress for this term.{'\n'}
+              </Caption>
+            }
+
             <View style={styles.inputContainer}>
               <TextInput 
                 style={styles.textInputL}
@@ -142,4 +165,9 @@ const styles = StyleSheet.create({
     marginRight: 5,
     marginVertical: 15,
   },
+  existingWamContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  }
 });

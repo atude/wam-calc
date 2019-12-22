@@ -23,7 +23,7 @@ const HomeStack = createStackNavigator({
 });
 
 HomeStack.navigationOptions = {
-  tabBarLabel: 'My WAM',
+  tabBarLabel: 'Dashboard',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={'account-check'}/>
   ),
