@@ -180,11 +180,11 @@ export default class MetricsScreen extends React.Component {
         <Card style={styles.performanceCard}>
           <Card.Content>
             <Title>
-              Cumulative WAM Performance
+              Cumulative Performance
             </Title>
             <Paragraph>
               Your cumulative WAM and its change throughout your degree, 
-              not including your current term WAM
+              not including your current term
             </Paragraph>
             <View style={styles.chartContainer}>
               {dataCumulative?.datasets[0]?.data?.length > 1 ?
@@ -209,10 +209,10 @@ export default class MetricsScreen extends React.Component {
         <Card style={styles.performanceCard}>
           <Card.Content>
             <Title>
-              Term WAM Performance
+              Term Performance
             </Title>
             <Paragraph>
-              Your WAM for each term throughout your degree, not including your current term WAM
+              Your WAM for each term throughout your degree, not including your current term
             </Paragraph>
             <View style={styles.chartContainer}>
               {dataTerm?.datasets[0]?.data?.length > 1 ?
