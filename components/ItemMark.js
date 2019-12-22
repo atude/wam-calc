@@ -25,11 +25,14 @@ export default class ItemMark extends React.Component {
   }
 
   render() {
-    let { mark, thisStyle } = this.props;
+    let { mark, thisStyle, path } = this.props;
     const markRank = this.getMarkRank();
 
     return (
-      <TouchableRipple onPress={()=>{}} onLongPress={() => this.props.path[0] === "CurrentTerm" && this.setState({menuOpen: true})}>
+      <TouchableRipple 
+        onPress={()=>{}} 
+        onLongPress={() => path && path[0] === "CurrentTerm" && this.setState({menuOpen: true})}
+      >
         <Menu
           visible={this.state.menuOpen}
           onDismiss={() => this.setState({menuOpen: false})}
