@@ -9,10 +9,11 @@ const termValues = ["Term 1", "Term 2", "Term 3", "Semester 1", "Semester 2", "S
 export default class DialogFinaliseTerm extends React.Component {
   state = {
     dialogTermPeriod: termValues[0],
+    dialogTermYear: new Date().getFullYear().toString(),
   }
 
   setDialog = () => {
-    const year = new Date().getFullYear();
+    const year = this.state.dialogTermYear;
     let name = `${year} | ${this.state.dialogTermPeriod}`.toString();
     this.props.action(name);
     this.resetDialog();
@@ -24,6 +25,13 @@ export default class DialogFinaliseTerm extends React.Component {
 
   render() {
     let { isDialog } = this.props;
+    let { dialogTermPeriod, dialogTermYear } = this.state;
+    const currYear = new Date().getFullYear();
+
+    let years = [];
+    for(let i = currYear - 3; i <= currYear; i++) {
+      years.push(i);
+    }
 
     return (
       <Portal>
@@ -34,11 +42,23 @@ export default class DialogFinaliseTerm extends React.Component {
             <Picker
               mode="dropdown"
               prompt="Select Study Period"
-              selectedValue={this.state.dialogTermPeriod}
+              selectedValue={dialogTermPeriod}
               style={styles.periodPicker}
-              onValueChange={(itemValue, itemIndex) => {setTimeout(() => {this.setState({dialogTermPeriod: itemValue})}, 0)}}>
+              onValueChange={(itemValue) => {setTimeout(() => {this.setState({dialogTermPeriod: itemValue})}, 0)}}>
               {termValues.map(period => (
                 <Picker.Item key={period} label={period} value={period}/>
+              ))}
+            </Picker>
+
+            <Subheading style={styles.pickerHeading}>Select Year</Subheading>
+            <Picker
+              mode="dropdown"
+              prompt="Select Year"
+              selectedValue={dialogTermYear}
+              style={styles.periodPicker}
+              onValueChange={(itemValue) => {setTimeout(() => {this.setState({dialogTermYear: itemValue})}, 0)}}>
+              {years.reverse().map(period => (
+                <Picker.Item key={period} label={period.toString()} value={period}/>
               ))}
             </Picker>
 
