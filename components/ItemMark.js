@@ -1,8 +1,7 @@
 import React from 'react';
 import { List, Title, TouchableRipple, Menu, } from 'react-native-paper';
 import { StyleSheet, } from 'react-native';
-
-import Colors from '../constants/Colors.js';
+import { getMarkRanks } from '../utils/index.js';
 
 export default class ItemMark extends React.Component {
   state = {
@@ -14,19 +13,9 @@ export default class ItemMark extends React.Component {
     this.setState({menuOpen: false})
   }
 
-  getMarkRank = () => {
-    const val = parseFloat(this.props.mark.mark).toFixed(2);
-
-    if(val < 50) return ["FL", Colors.fl];
-    if(val < 65) return ["PS", Colors.ps];
-    if(val < 75) return ["CR", Colors.cr];
-    if(val < 85) return ["DN", Colors.dn];
-    return ["HD", Colors.hd];
-  }
-
   render() {
-    let { mark, thisStyle, path } = this.props;
-    const markRank = this.getMarkRank();
+    let { mark, thisStyle, path, isAuType } = this.props;
+    const markRank = getMarkRanks(parseFloat(this.props.mark.mark).toFixed(2), isAuType);
 
     return (
       <TouchableRipple 

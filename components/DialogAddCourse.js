@@ -5,7 +5,7 @@ import { StyleSheet, View, Picker } from 'react-native';
 
 import Colors from '../constants/Colors.js';
 
-const uocValues = [2,3,4,6,12];
+const uocValues = [2,3,4,5,6,12];
 const iconValuesA = ["code-tags", "database", "dns", "chart-areaspline", "math-compass"];
 const iconValuesB = [ "flask", "earth", "bank", "camera", "shape"];
 const iconValuesC = ["brush", "music-note", "basketball",  "account-group", "worker", ];
@@ -64,10 +64,8 @@ export default class DialogAddCourse extends React.Component {
                 style={styles.UOCPicker}
                 mode="dropdown"
                 selectedValue={dialogCourseValue}
-                onValueChange={(itemValue, itemIndex) => {setTimeout(() => 
-                  {this.setState({dialogCourseValue: itemValue})}, 0)}}
-                >
-
+                onValueChange={(itemValue) => { this.setState({ dialogCourseValue: itemValue }) }}
+              >
                 {uocValues.map(uoc => (
                   <Picker.Item key={`uoc_${uoc}`} label={uoc.toString()} value={uoc}/>
                 ))}

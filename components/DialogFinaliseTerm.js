@@ -44,7 +44,7 @@ export default class DialogFinaliseTerm extends React.Component {
               prompt="Select Study Period"
               selectedValue={dialogTermPeriod}
               style={styles.periodPicker}
-              onValueChange={(itemValue) => {setTimeout(() => {this.setState({dialogTermPeriod: itemValue})}, 0)}}>
+              onValueChange={(itemValue) => {this.setState({dialogTermPeriod: itemValue})}}>
               {termValues.map(period => (
                 <Picker.Item key={period} label={period} value={period}/>
               ))}
@@ -56,7 +56,8 @@ export default class DialogFinaliseTerm extends React.Component {
               prompt="Select Year"
               selectedValue={dialogTermYear}
               style={styles.periodPicker}
-              onValueChange={(itemValue) => {setTimeout(() => {this.setState({dialogTermYear: itemValue})}, 0)}}>
+              onValueChange={(itemValue) => { this.setState({ dialogTermYear: itemValue }) }}
+            >
               {years.reverse().map(period => (
                 <Picker.Item key={period} label={period.toString()} value={period}/>
               ))}

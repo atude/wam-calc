@@ -16,7 +16,7 @@ export default class ItemTerm extends React.Component {
   }
 
   render() {
-    const { keyV, terms, deleteHandler, calcWam } = this.props;
+    const { keyV, terms, deleteHandler, calcWam, isAuType } = this.props;
 
     return (
       <View> 
@@ -49,6 +49,7 @@ export default class ItemTerm extends React.Component {
               course={course}
               deleteHandler={deleteHandler}
               path={[keyV, i]}
+              isAuType={isAuType}
             />
           ))          
         }

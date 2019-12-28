@@ -191,9 +191,10 @@ export default class DialogAddMark extends React.Component {
             <Picker
               mode="dropdown"
               selectedValue={dialogMarkCourse}
-              onValueChange={(itemValue, itemIndex) => {setTimeout(() => 
-                {this.setState({dialogMarkCourse: itemValue, dialogMarkCourseIndex: itemIndex})}, 0)}}
-              >
+              onValueChange={(itemValue, itemIndex) => {
+                this.setState({ dialogMarkCourse: itemValue, dialogMarkCourseIndex: itemIndex })
+              }}
+            >
               {currentCourses.map(course => (
                 <Picker.Item key={course.name} label={course.name} value={course.name}/>
               ))}

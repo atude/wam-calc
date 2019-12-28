@@ -3,28 +3,25 @@ import { StyleSheet, View, } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 import Colors from '../constants/Colors';
-import { Title, Text, ProgressBar, Divider, List, IconButton } from 'react-native-paper';
+import { Title, Text, ProgressBar, Divider, List, IconButton, Switch, Caption } from 'react-native-paper';
 import { ScrollView } from 'react-native-gesture-handler';
 import Layout from '../constants/Layout';
+import { getMarkRanks } from '../utils';
 
 export default class HomeScreen extends React.Component {
-  getMarkRank = (val) => {
-    if(val < 0.1) return ["--", Colors.na];
-    if(val < 50) return ["FL", Colors.fl];
-    if(val < 65) return ["PS", Colors.ps];
-    if(val < 75) return ["CR", Colors.cr];
-    if(val < 85) return ["DN", Colors.dn];
-    return ["HD", Colors.hd];
+  handleRankTypeSwitch = () => {
+    this.props.data.screenProps.setRankType();
   }
 
   render() {
     const getProps = this.props.data.screenProps;
-    let { termWam, wam, bestWorst, stateSetter } = getProps;
-    const markRank = this.getMarkRank(termWam);
+    let { termWam, wam, bestWorst, stateSetter, isAuType } = getProps;
+
+    const markRank = getMarkRanks(termWam, isAuType);
     if(bestWorst === undefined) bestWorst = [["--", 0], ["--", 0]];
     
-    const bestMarkRank = this.getMarkRank(bestWorst[0][1]);
-    const worstMarkRank = this.getMarkRank(bestWorst[1][1]);
+    const bestMarkRank = getMarkRanks(bestWorst[0][1], isAuType);
+    const worstMarkRank = getMarkRanks(bestWorst[1][1], isAuType);
 
     return (
       <View style={styles.container}>
@@ -51,14 +48,39 @@ export default class HomeScreen extends React.Component {
               <Text style={styles.wamText}>{wam < 0.1 ? "--" : wam}</Text>
             </View>
             <View style={styles.wamProgressContainer}>
-              <ProgressBar color="#fff" progress={((wam / 100) - 0.5) * 2} style={styles.wamProgress}/>
+              {isAuType === true ?
+                <ProgressBar color="#fff" progress={((wam / 100) - 0.5) * 2} style={styles.wamProgress} />
+                :
+                <ProgressBar color="#fff" progress={((wam / 100) - 0.6) * 2} style={styles.wamProgress} />
+              }
             </View>
             <View style={styles.wamProgressLabelContainer}>
-              <Text style={[styles.wamProgressLabelText, {opacity: wam >= 85 ? 1 : Colors.lightOpacity}]}>HD</Text>
-              <Text style={[styles.wamProgressLabelText, {opacity: wam >= 75 ? 1 : Colors.lightOpacity}]}>DN</Text>
-              <Text style={[styles.wamProgressLabelText, {opacity: wam >= 65 ? 1 : Colors.lightOpacity}]}>CR</Text>
-              <Text style={[styles.wamProgressLabelText, {opacity: wam >= 50 ? 1 : Colors.lightOpacity}]}>PS</Text>
+              {isAuType === true ?
+                <>
+                  <Text style={[styles.wamProgressLabelText, {opacity: wam >= 85 ? 1 : Colors.lightOpacity}]}>HD</Text>
+                  <Text style={[styles.wamProgressLabelText, {opacity: wam >= 75 ? 1 : Colors.lightOpacity}]}>DN</Text>
+                  <Text style={[styles.wamProgressLabelText, {opacity: wam >= 65 ? 1 : Colors.lightOpacity}]}>CR</Text>
+                  <Text style={[styles.wamProgressLabelText, { opacity: wam >= 50 ? 1 : Colors.lightOpacity }]}>PS</Text>
+                </>
+                :
+                <>
+                  <Text style={[styles.wamProgressLabelText, {opacity: wam >= 90 ? 1 : Colors.lightOpacity}]}>A</Text>
+                  <Text style={[styles.wamProgressLabelText, {opacity: wam >= 80 ? 1 : Colors.lightOpacity}]}>B</Text>
+                  <Text style={[styles.wamProgressLabelText, {opacity: wam >= 70 ? 1 : Colors.lightOpacity}]}>C</Text>
+                  <Text style={[styles.wamProgressLabelText, { opacity: wam >= 60 ? 1 : Colors.lightOpacity }]}>D</Text>
+                </>
+              }
+              
             </View>
+          </View>
+          <View style={styles.switchTypeContainer}>
+            <Caption style={styles.rankTypeText}>US</Caption>
+            <Switch
+              value={isAuType}
+              color="#fff"
+              onValueChange={() => {this.handleRankTypeSwitch()}}
+            />
+            <Caption style={styles.rankTypeText}>AU</Caption>
           </View>
         </View>
         <View style={styles.statsContainer}>
@@ -176,5 +198,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 20,
     zIndex: 999999999,
+  },
+  switchTypeContainer: {
+    flexDirection: "row",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    margin: 20,
+  },
+  rankTypeText: {
+    color: "#fff",
+    flex: 1,
+    margin: 5,
   }
 });
