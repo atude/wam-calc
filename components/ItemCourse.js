@@ -6,6 +6,7 @@ import { StyleSheet, View } from 'react-native';
 import Colors from '../constants/Colors.js';
 import Layout from '../constants/Layout.js';
 import ItemMark from './ItemMark.js';
+import { getMarkRanks } from '../utils/index.js';
 
 export default class ItemCourse extends React.Component {
   state = {
@@ -16,15 +17,6 @@ export default class ItemCourse extends React.Component {
   deleteThis = () => {
     this.props.deleteHandler(this.props.path);
     this.setState({menuOpen: false})
-  }
-
-  getMarkRank = (val) => {
-    if(val === 0) return ["--", Colors.na];
-    if(val < 50) return ["FL", Colors.fl];
-    if(val < 65) return ["PS", Colors.ps];
-    if(val < 75) return ["CR", Colors.cr];
-    if(val < 85) return ["DN", Colors.dn];
-    return ["HD", Colors.hd];
   }
 
   getCourseMarkAv = () => {
@@ -45,12 +37,12 @@ export default class ItemCourse extends React.Component {
   }
 
   render() {
-    let { course, path } = this.props;
+    let { course, path, isAuType } = this.props;
     let { accordionOpen } = this.state;
     const noMarks = (course.marks === undefined || course.marks.length === 0) ? true : false;
     const courseCompletion = this.getCourseCompletion();
     let totalAv = noMarks ? 0 : this.getCourseMarkAv();
-    let markRank = this.getMarkRank(totalAv);
+    let markRank = getMarkRanks(totalAv, isAuType);
 
     return (
       <View style={styles.listContainer}>
@@ -79,6 +71,7 @@ export default class ItemCourse extends React.Component {
                 mark={mark} 
                 deleteHandler={this.props.deleteHandler}
                 path={path ? path.concat(i) : null}
+                isAuType={isAuType}
               />
             ))
           }

@@ -5,6 +5,7 @@ import { LineChart, PieChart } from "react-native-chart-kit";
 
 import Colors from '../constants/Colors.js';
 import Layout from '../constants/Layout.js';
+import { getMarkRanks } from '../utils/index.js';
 
 const chartConfig = {
   fillShadowGradientOpacity: 0.02,
@@ -22,27 +23,10 @@ const dummyCircle = [
   },
 ];
 
-
 export default class MetricsScreen extends React.Component {
   state = {
     data: null
   } 
-
-  getPointColor = (data) => {
-    if(data < 50) return Colors.fl;
-    if(data < 65) return Colors.ps;
-    if(data < 75) return Colors.cr;
-    if(data < 85) return Colors.dn;
-    return Colors.hd;
-  }
-
-  getMarkRank = (data) => {
-    if(data < 50) return "FL";
-    if(data < 65) return "PS";
-    if(data < 75) return "CR";
-    if(data < 85) return "DN";
-    return "HD";
-  }
 
   formatX = (label) => {
     let newLabel = "";
@@ -70,7 +54,8 @@ export default class MetricsScreen extends React.Component {
   render() {
     const chartWidth = Layout.window.width;
     const getProps = this.props.data.screenProps;
-    let { calcWam, terms } = getProps;
+    let { calcWam, terms, isAuType } = getProps;
+
     let dataTerm = {
       labels: [],
       datasets: [{
@@ -87,38 +72,74 @@ export default class MetricsScreen extends React.Component {
       }],
     };
 
-    let dataMarks = [
-      {
-        name: "FL",
-        i: 0,
-        color: Colors.fl,
-        legendFontColor: `rgba(134, 65, 244, 1)`,
-      },
-      {
-        name: "PS",
-        i: 0,
-        color: Colors.ps,
-        legendFontColor: `rgba(134, 65, 244, 1)`,
-      },
-      {
-        name: "CR",
-        i: 0,
-        color: Colors.cr,
-        legendFontColor: `rgba(134, 65, 244, 1)`,
-      },
-      {
-        name: "DN",
-        i: 0,
-        color: Colors.dn,
-        legendFontColor: `rgba(134, 65, 244, 1)`,
-      },
-      {
-        name: "HD",
-        i: 0,
-        color: Colors.hd,
-        legendFontColor: `rgba(134, 65, 244, 1)`,
-      },
-    ];
+    let dataMarks = [];
+    if (isAuType) {
+      dataMarks = [
+        {
+          name: "FL",
+          i: 0,
+          color: Colors.fl,
+          legendFontColor: `rgba(134, 65, 244, 1)`,
+        },
+        {
+          name: "PS",
+          i: 0,
+          color: Colors.ps,
+          legendFontColor: `rgba(134, 65, 244, 1)`,
+        },
+        {
+          name: "CR",
+          i: 0,
+          color: Colors.cr,
+          legendFontColor: `rgba(134, 65, 244, 1)`,
+        },
+        {
+          name: "DN",
+          i: 0,
+          color: Colors.dn,
+          legendFontColor: `rgba(134, 65, 244, 1)`,
+        },
+        {
+          name: "HD",
+          i: 0,
+          color: Colors.hd,
+          legendFontColor: `rgba(134, 65, 244, 1)`,
+        },
+      ];
+    } else {
+      dataMarks = [
+        {
+          name: "F",
+          i: 0,
+          color: Colors.fl,
+          legendFontColor: `rgba(134, 65, 244, 1)`,
+        },
+        {
+          name: "D",
+          i: 0,
+          color: Colors.ps,
+          legendFontColor: `rgba(134, 65, 244, 1)`,
+        },
+        {
+          name: "C",
+          i: 0,
+          color: Colors.cr,
+          legendFontColor: `rgba(134, 65, 244, 1)`,
+        },
+        {
+          name: "B",
+          i: 0,
+          color: Colors.dn,
+          legendFontColor: `rgba(134, 65, 244, 1)`,
+        },
+        {
+          name: "A",
+          i: 0,
+          color: Colors.hd,
+          legendFontColor: `rgba(134, 65, 244, 1)`,
+        },
+      ];
+    }
 
     let cumulativeTerms = {};
 
@@ -137,7 +158,7 @@ export default class MetricsScreen extends React.Component {
     Object.values(terms).map(termPeriod => {
       termPeriod.map(course => {
         course.marks.map(mark => {
-          var ranking = dataMarks.find(x => x.name == this.getMarkRank(mark.mark));
+          var ranking = dataMarks.find(x => x.name == getMarkRanks(mark.mark, isAuType)[0]);
           if (ranking) ranking.i++;
         });
       });
@@ -195,7 +216,7 @@ export default class MetricsScreen extends React.Component {
                   height={230}
                   chartConfig={chartConfig}
                   formatXLabel={(label) => this.formatX(label)}
-                  getDotColor={(point) => this.getPointColor(point)}
+                  getDotColor={(point) => getMarkRanks(point, isAuType)[1]}
                   bezier
                 />
                 :
@@ -223,7 +244,7 @@ export default class MetricsScreen extends React.Component {
                   height={230}
                   chartConfig={chartConfig}
                   formatXLabel={(label) => this.formatX(label)}
-                  getDotColor={(point) => this.getPointColor(point)}
+                  getDotColor={(point) => getMarkRanks(point, isAuType)[1]}
                   bezier
                 />
                 :

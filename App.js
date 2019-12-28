@@ -5,8 +5,6 @@ import ParentController from './ParentController';
 import getFirebase from './firebase/firebaseConfig';
 import LoginScreen from './screens/LoginScreen';
 import { AsyncStorage, } from 'react-native';
-import { AppLoading } from 'expo';
-import { Asset } from 'expo-asset';
 
 
 const theme = {

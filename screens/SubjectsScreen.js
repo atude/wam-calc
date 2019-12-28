@@ -9,7 +9,12 @@ export default class SubjectsScreen extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.containerScroll}>
-          <ItemPeriod calcWam={getProps.calcWam} terms={getProps.terms} deleteHandler={getProps.deleteHandler}/>
+          <ItemPeriod
+            calcWam={getProps.calcWam}
+            terms={getProps.terms}
+            deleteHandler={getProps.deleteHandler}
+            isAuType={getProps.isAuType}
+          />
         </ScrollView>
       </View>
     );

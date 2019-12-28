@@ -59,7 +59,7 @@ export default class ItemPeriod extends React.Component {
   }
 
   render() {
-    const { terms, deleteHandler, calcWam } = this.props;
+    const { terms, deleteHandler, calcWam, isAuType } = this.props;
     let { filterMethod } = this.state;
 
     return (
@@ -88,7 +88,14 @@ export default class ItemPeriod extends React.Component {
           <View>
             <List.Section title="Ongoing Courses">
               <Divider/>
-              <ItemTerm calcWam={calcWam} key={`_currentterm_`} terms={terms} deleteHandler={deleteHandler} keyV={"CurrentTerm"}/>
+              <ItemTerm
+                calcWam={calcWam}
+                key={`_currentterm_`}
+                terms={terms}
+                deleteHandler={deleteHandler}
+                keyV={"CurrentTerm"}
+                isAuType={isAuType}
+              />
             </List.Section>
             
             {/* Only show completed courses if they exist */}
@@ -96,7 +103,14 @@ export default class ItemPeriod extends React.Component {
               <List.Section title="Completed Courses">
                 <Divider/>
                 {Object.keys(terms).filter(key => key !== "CurrentTerm").sort().reverse().map((key, i) => (
-                  <ItemTerm calcWam={calcWam} key={`_${key}_${i}`} terms={terms} deleteHandler={deleteHandler} keyV={key}/>
+                  <ItemTerm
+                    calcWam={calcWam}
+                    key={`_${key}_${i}`}
+                    terms={terms}
+                    deleteHandler={deleteHandler}
+                    keyV={key}
+                    isAuType={isAuType}
+                  />
                 ))} 
               </List.Section>
             }
@@ -109,6 +123,7 @@ export default class ItemPeriod extends React.Component {
                 course={course}
                 deleteHandler={deleteHandler}
                 path={null}
+                isAuType={isAuType}
               />
             ))} 
           </View>

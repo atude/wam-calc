@@ -16,6 +16,8 @@ export default class ParentController extends React.Component {
   state = {
     open: false,
 
+    isAuType: true,
+
     terms: {},
     currentCourses: [],
 
@@ -47,6 +49,15 @@ export default class ParentController extends React.Component {
   loadData = async () => {
     let get = await AsyncStorage.getItem('terms');
     let timestamp = await AsyncStorage.getItem('timestamp');
+    let getIsAu = await AsyncStorage.getItem('isAu');
+
+    if (getIsAu == undefined || getIsAu == null) {
+      await AsyncStorage.setItem('isAu', "true");
+      getIsAu = true;
+      console.log("Cant find type -> set to true (AU)");
+    } else {
+      getIsAu = getIsAu === "false" ? false : true;
+    }
 
     //Get firebase save
     let getOnline = null;
@@ -80,7 +91,7 @@ export default class ParentController extends React.Component {
         get = {"CurrentTerm": []};
       }
 
-      console.log(get);
+      //console.log(get);
     }
 
     console.log("Loaded");
@@ -95,6 +106,7 @@ export default class ParentController extends React.Component {
       wam: wams[0],
       termWam: wams[1],
       bestWorst: bestWorst,
+      isAuType: getIsAu,
     });
   }
 
@@ -231,10 +243,7 @@ export default class ParentController extends React.Component {
 
     wam = (courseTotals.reduce(((prev, curr) => prev + curr), 0) / uocParentTotal).toFixed(2);
 
-    console.log("Term wam");
-    console.log(termWam);
-    console.log("Total wam");
-    console.log(wam);
+    console.log("Term wam: " + termWam + " | Total wam: " + wam);
 
     return [isNaN(wam) ? 0 : wam, isNaN(termWam) ? 0 : termWam];
   }
@@ -298,6 +307,12 @@ export default class ParentController extends React.Component {
     this.setSave(terms, []);
   }
 
+  setRankType = async () => {
+    const newType = !this.state.isAuType;
+    this.setState({ isAuType: newType });
+    await AsyncStorage.setItem('isAu', newType ? "true" : "false");
+  }
+
   componentDidMount = () => {
     this.loadData();
   }
@@ -308,7 +323,7 @@ export default class ParentController extends React.Component {
 
   render() {
     let { isDialogAddCourse, isDialogAddMark, isDialogFinaliseTerm, isDialogSettings,
-      terms, currentCourses, isSnackbar, termWam, wam, bestWorst } = this.state;
+      terms, currentCourses, isSnackbar, termWam, wam, bestWorst, isAuType } = this.state;
 
     return(
       <View style={styles.container}>
@@ -324,6 +339,8 @@ export default class ParentController extends React.Component {
           bestWorst: bestWorst,
           stateSetter: this.stateSetter,
           calcWam: this.calcWam,
+          isAuType: isAuType,
+          setRankType: this.setRankType,
         }}/>
 
         <Portal>
