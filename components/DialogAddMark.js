@@ -1,5 +1,5 @@
 import React from 'react';
-import { Portal, Dialog, TextInput, Button, Subheading, Headline, Caption, Checkbox, IconButton, Text, } from 'react-native-paper';
+import { Portal, Dialog, TextInput, Button, Subheading, Checkbox, IconButton, Text, } from 'react-native-paper';
 import { StyleSheet, View, Picker } from 'react-native';
 
 import Colors from '../constants/Colors.js';
@@ -12,6 +12,7 @@ export default class DialogAddMark extends React.Component {
     dialogMarkCourse: "",
     dialogMarkCourseTotal: "",
     dialogMarkCourseIndex: 0,
+    dialogMarkTemplate: "",
     isWeightedMark: false,
     determineFromCourse: false,
     showHelpDialog: false,
@@ -33,7 +34,11 @@ export default class DialogAddMark extends React.Component {
       return;
     }
 
-    const normalisedMark = !this.state.isWeightedMark ? this.state.dialogMarkValue : (this.state.dialogMarkValue / (this.state.dialogMarkWeight / 100));
+    const normalisedMark =
+      !this.state.isWeightedMark ?
+        this.state.dialogMarkValue :
+        (this.state.dialogMarkValue / (this.state.dialogMarkWeight / 100));
+    
     this.props.action(
       this.state.dialogMarkName, 
       normalisedMark,
@@ -87,7 +92,6 @@ export default class DialogAddMark extends React.Component {
     this.setState({
       dialogMarkValue: finalAssessmentMark.toString(),
       dialogMarkWeight: remainingWeight,
-
       dialogMarkCourseTotal: courseTotal,
     });
   };
@@ -95,48 +99,91 @@ export default class DialogAddMark extends React.Component {
   render() {
     let { isDialog, currentCourses } = this.props;
     let { dialogMarkName, dialogMarkValue, dialogMarkWeight, dialogMarkCourseTotal,
-      dialogMarkCourse, showHelpDialog, isWeightedMark, determineFromCourse } = this.state;
+      dialogMarkCourse, showHelpDialog, isWeightedMark, determineFromCourse,
+      isOptionsDialog, dialogMarkTemplate, dialogMarkCourseIndex,
+    } = this.state;
 
     return (
       <Portal>
         <Dialog visible={isDialog} onDismiss={this.resetDialog}>
           <Dialog.Title>Add Mark</Dialog.Title>
-          <Dialog.Content style={styles.dialogContainer}>
+          <Dialog.Content>
 
-            <View style={{flexDirection: 'row', marginBottom: 4}}>
-              <Checkbox onPress={() => this.handleWeightedMarkSwitch()} 
-                status={isWeightedMark ? 'checked' : 'unchecked'}>
-              </Checkbox>
-              <Subheading style={styles.checkboxText} 
-                onPress={() => this.handleWeightedMarkSwitch()}>
-                Pre-weighted
-              </Subheading>
-            </View>
+            <Button mode="outlined" icon="settings"
+              onPress={() => this.setState({isOptionsDialog: true})}
+            >
+              Advanced Options
+            </Button>
+            <Portal>
+              <Dialog visible={isOptionsDialog} onDismiss={() => this.setState({isOptionsDialog: false})}>
+                <Dialog.Content>
+                  <View style={{flexDirection: 'row', marginBottom: 4}}>
+                    <Checkbox onPress={() => this.handleWeightedMarkSwitch()} 
+                      status={isWeightedMark ? 'checked' : 'unchecked'}>
+                    </Checkbox>
+                    <Subheading style={styles.checkboxText} 
+                      onPress={() => this.handleWeightedMarkSwitch()}>
+                      Pre-weighted
+                    </Subheading>
+                  </View>
 
-            <View style={{flexDirection: 'row', marginBottom: 18, alignItems: "center"}}>
-              <Checkbox onPress={() => this.handleDetermineMarkSwitch()} 
-                status={determineFromCourse ? 'checked' : 'unchecked'}>
-              </Checkbox>
-              <Subheading style={styles.checkboxText} 
-                onPress={() => this.handleDetermineMarkSwitch()}>
-                Determine last assessment mark from course total
-              </Subheading>
-              <IconButton
-                icon="help"
-                color={showHelpDialog ? Colors.tintColor : Colors.grey}
-                onPress={() => this.handleHelpDialog()}
-              />
-            </View>
+                  <View style={{flexDirection: 'row', marginBottom: 18, alignItems: "center"}}>
+                    <Checkbox onPress={() => this.handleDetermineMarkSwitch()} 
+                      status={determineFromCourse ? 'checked' : 'unchecked'}>
+                    </Checkbox>
+                    <Subheading style={styles.checkboxText} 
+                      onPress={() => this.handleDetermineMarkSwitch()}>
+                      Determine last assessment mark from course total
+                    </Subheading>
+                    <IconButton
+                      icon="help"
+                      color={showHelpDialog ? Colors.tintColor : Colors.grey}
+                      onPress={() => this.handleHelpDialog()}
+                    />
+                  </View>
+                  {showHelpDialog && 
+                    <Text style={styles.helpDialogText}>
+                      Use this option when you have the total course mark for a course, but have 
+                      not been given the mark for the final assessment (usually for final exams).
+                    </Text>
+                  }
+                  <View>
+                  <Subheading style={styles.templateHeading}>Use Template</Subheading>
+                    <Picker
+                      mode="dropdown"
+                      selectedValue={dialogMarkTemplate}
+                      onValueChange={(template) => {
+                        this.setState({
+                          dialogMarkTemplate: template,
+                          dialogMarkName: template.assessmentName,
+                          dialogMarkWeight: template.weight,
+                        })
+                      }}
+                    >
+                      <Picker.Item key="_none" label={"None"} value={{assessmentName: "", weight: ""}}/>
+                      {currentCourses[dialogMarkCourseIndex]?.templates?.map((template, i) => (
+                        <Picker.Item
+                          key={template.assessmentName + i}
+                          label={template.assessmentName}
+                          value={template}
+                        />
+                      ))}
+                    </Picker>
+                  </View>
+                </Dialog.Content>
+                <Dialog.Actions>
+                  <Button style={styles.actionButtons}
+                    onPress={() => this.setState({ isOptionsDialog: false })}
+                  >
+                    Done
+                  </Button>
+                </Dialog.Actions>
+              </Dialog>
+            </Portal>
 
-            {showHelpDialog && 
-              <Text style={styles.helpDialogText}>
-                Use this option when you have the total course mark for a course, but have 
-                not been given the mark for the final assessment (usually for final exams).
-              </Text>
-            }
+
 
             <TextInput 
-              style={styles.textInputFull}
               label="Assessment Name" 
               value={dialogMarkName}
               onChangeText={dialogMarkName => {this.setState({dialogMarkName})}}
@@ -186,7 +233,6 @@ export default class DialogAddMark extends React.Component {
               </View>
             }
          
-          
             <Subheading style={styles.courseHeading}>Select Course</Subheading>
             <Picker
               mode="dropdown"
@@ -219,14 +265,8 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     fontSize: 15,
   },
-  dialogContainer: {
-
-  }, 
   actionButtons: {
     margin: 12,
-  },
-  textInputFull: {
-
   },
   inputContainer: {
     flex: 1,
@@ -249,11 +289,14 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     color: Colors.tintColor,
   },
+  templateHeading: {
+    marginLeft: 5,
+    color: Colors.tintColor,
+  },
   helpDialogText: {
     paddingBottom: 30,
     paddingLeft: 30,
     paddingRight: 30,
-
     color: Colors.grey,
   }
 });
