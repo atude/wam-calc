@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import { Button, Text, TextInput, Headline, } from 'react-native-paper';
+import { Button, Text, TextInput, } from 'react-native-paper';
 import { signInEmail, createAccount } from '../firebase/firebaseFunctions';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import LoadingItem from '../components/LoadingItem';
 import Colors from '../constants/Colors';
-
+import loginIcon from '../assets/images/loginicon.png';
 
 export default function LoginScreen(props) {
   const [credentials, setCredentials] = useState({
@@ -16,11 +16,9 @@ export default function LoginScreen(props) {
   const [err, setError] = useState("");
   const [isSignup, setIsSignup] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLogoLoading, setIsLogoLoading] = useState(true);
-
 
   const handleSkipSignIn = () => {
-    props.handleSetSkipAccount(1);
+    props.handleSetSkipAccount("true");
   }
 
   const handleSignIn = async () => {
@@ -47,22 +45,17 @@ export default function LoginScreen(props) {
     setIsLoading(false);
   }
 
-  
-
   return (    
     <View style={styles.container}>
       <Image 
         resizeMode="center"
         style={styles.loginIcon} 
-        source={require('../assets/images/loginicon.png')} 
-        onLoad={() => setTimeout(() => {
-          setIsLogoLoading(false)
-        }, 1000)} 
+        source={loginIcon} 
       />
-      {props.isMainLoading || isLogoLoading ? 
+      {props?.isMainLoading ? 
       <LoadingItem isLoading={true}/>
       :    
-      <>
+      <View style={{flex: 1}}>
         <TextInput
           style={styles.inputMain}
           label="Email"
@@ -116,7 +109,7 @@ export default function LoginScreen(props) {
           Skip sign in
       </Text>
       <LoadingItem isLoading={isLoading}/>
-      </>
+      </View>
       }
       <View style={styles.firebaseTextContainer}>
         <View>
@@ -136,13 +129,8 @@ export default function LoginScreen(props) {
   );
 };
 
-LoginScreen.navigationOptions = {
-  title: 'Login',
-};
-
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
     alignItems: "stretch",
     justifyContent: "center",
@@ -176,9 +164,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   loginIcon: {
+    flex: 0.4,
     alignSelf: "center",
-    marginBottom: -75,
-    marginTop: -10,
   },
   errorText: {
     textAlign: "center",

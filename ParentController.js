@@ -156,13 +156,19 @@ export default class ParentController extends React.Component {
     this.setSave(terms, currentCourses);
   }
 
-  createCourse = (name, uoc, icon) => {
+  createCourse = (name, uoc, icon, templates) => {
     let currentCourses = this.state.currentCourses;
     let terms = this.state.terms;
 
-    currentCourses.unshift({name: name, uoc: uoc, icon: icon, marks: []});
-    terms.CurrentTerm = currentCourses;
+    currentCourses.unshift({
+      name: name,
+      uoc: uoc,
+      icon: icon,
+      marks: [],
+      templates: templates
+    });
 
+    terms.CurrentTerm = currentCourses;
     this.setSave(terms, currentCourses);
   }
 

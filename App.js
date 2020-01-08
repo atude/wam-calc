@@ -6,7 +6,6 @@ import getFirebase from './firebase/firebaseConfig';
 import LoginScreen from './screens/LoginScreen';
 import { AsyncStorage, } from 'react-native';
 
-
 const theme = {
   ...DefaultTheme,
   roundness: 2,
@@ -19,39 +18,50 @@ const theme = {
 
 export default function App(props) {
   const [user, setUser] = useState(null);
-  const [skipAccount, setSkipAccount] = useState("false");
   const [isMainLoading, setIsMainLoading] = useState(true);
+  const [isSkipLoading, setIsSkipLoading] = useState(true);
+  const [skipAccount, setSkipAccount] = useState("false");
 
-  const handleSetSkipAccount = (setSkip) => {
+  const handleSetSkipAccount = async (setSkip) => {
+    await AsyncStorage.setItem("skipAccount", setSkip);
     setSkipAccount(setSkip);
   }
 
-  AsyncStorage.getItem("skipAccount").then((isCheckSkip) => {
-    if(isCheckSkip == "true") {
-      setSkipAccount("true");
-    }
+  useEffect(() => {
+    setIsSkipLoading(true);
+    const setSkipProcess = async () => {
+      const isCheckSkip = await AsyncStorage.getItem("skipAccount");
 
-    console.log("isCheckSkip: " + isCheckSkip);
-  })
+      if (isCheckSkip && isCheckSkip === "true") {
+        setSkipAccount("true");
+      } else {
+        setSkipAccount("false");
+      };
+    };
+
+    setSkipProcess();
+    setIsSkipLoading(false);
+  }, [skipAccount]);
+ 
+  useEffect(() => {
+    getFirebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+        console.log("Auth state changed => " + user.email);
+      } else {
+        setUser(null);
+      }
   
-  getFirebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      setUser(user);
-      console.log("Auth state changed => " + user.email);
-    } else {
-      setUser(null);
-    }
-
-    setIsMainLoading(false);
-  });
-
-
+      setIsMainLoading(false);
+    });
+  }, []);
+ 
   return (
     <PaperProvider theme={theme}>
-    {(!user && skipAccount == "false") ?
-      <LoginScreen isMainLoading={isMainLoading} handleSetSkipAccount={handleSetSkipAccount}/> 
+    {(!user && skipAccount === "false") ?
+      <LoginScreen isMainLoading={isMainLoading || isSkipLoading} handleSetSkipAccount={handleSetSkipAccount}/> 
       :
-      <ParentController email={user ? user.email : null} handleSetSkipAccount={handleSetSkipAccount}/>
+      <ParentController email={!!user ? user.email : null} handleSetSkipAccount={handleSetSkipAccount}/>
     }
     </PaperProvider>
   );

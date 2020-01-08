@@ -51,7 +51,7 @@ export default class HomeScreen extends React.Component {
               {isAuType === true ?
                 <ProgressBar color="#fff" progress={((wam / 100) - 0.5) * 2} style={styles.wamProgress} />
                 :
-                <ProgressBar color="#fff" progress={((wam / 100) - 0.6) * 2} style={styles.wamProgress} />
+                <ProgressBar color="#fff" progress={((wam / 100) - 0.6) / (1 - 0.6)} style={styles.wamProgress} />
               }
             </View>
             <View style={styles.wamProgressLabelContainer}>
