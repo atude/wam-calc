@@ -29,7 +29,7 @@ export default class DialogFinaliseTerm extends React.Component {
     const currYear = new Date().getFullYear();
 
     let years = [];
-    for(let i = currYear - 3; i <= currYear; i++) {
+    for(let i = currYear - 5; i <= currYear; i++) {
       years.push(i);
     }
 

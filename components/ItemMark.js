@@ -21,6 +21,7 @@ export default class ItemMark extends React.Component {
       <TouchableRipple 
         onPress={()=>{}} 
         onLongPress={() => path && path[0] === "CurrentTerm" && this.setState({menuOpen: true})}
+        delayLongPress={10}
       >
         <Menu
           visible={this.state.menuOpen}

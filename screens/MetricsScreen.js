@@ -45,14 +45,14 @@ export default class MetricsScreen extends React.Component {
       case "Semester 2":
         newLabel = "S2"; break;
       case "Summer Term":
-        newLabel = "SUM"; break;
+        newLabel = "SU"; break;
     }
 
     return year + newLabel;
   } 
 
   render() {
-    const chartWidth = Layout.window.width;
+    const chartWidth = Layout.window.width - 60;
     const getProps = this.props.data.screenProps;
     let { calcWam, terms, isAuType } = getProps;
 
@@ -144,7 +144,8 @@ export default class MetricsScreen extends React.Component {
     let cumulativeTerms = {};
 
     //For terms
-    Object.keys(terms).filter(key => key !== "CurrentTerm").map((key) => {      
+    Object.keys(terms).filter(key => key !== "CurrentTerm").sort()
+    .map((key) => {      
       dataTerm.datasets[0].data.push(calcWam({key: terms[key]})[0]);
 
       cumulativeTerms[key] = terms[key];
@@ -208,16 +209,19 @@ export default class MetricsScreen extends React.Component {
               Your cumulative WAM and its change throughout your degree, 
               not including your current term
             </Paragraph>
-            <View style={styles.chartContainer}>
+            <View style={[styles.chartContainer, styles.chartContainerLine]}>
               {dataCumulative?.datasets[0]?.data?.length > 1 ?
                 <LineChart
                   data={dataCumulative}
                   width={chartWidth}
-                  height={230}
+                  height={240}
                   chartConfig={chartConfig}
                   formatXLabel={(label) => this.formatX(label)}
                   getDotColor={(point) => getMarkRanks(point, isAuType)[1]}
-                  bezier
+                  verticalLabelRotation={
+                    dataCumulative.datasets[0].data.length > 12 ? 90 : 50
+                  }
+                  xLabelsOffset={-10}
                 />
                 :
                 <Button disabled>
@@ -236,15 +240,19 @@ export default class MetricsScreen extends React.Component {
             <Paragraph>
               Your WAM for each term throughout your degree, not including your current term
             </Paragraph>
-            <View style={styles.chartContainer}>
+            <View style={[styles.chartContainer, styles.chartContainerLine]}>
               {dataTerm?.datasets[0]?.data?.length > 1 ?
                 <LineChart
                   data={dataTerm}
                   width={chartWidth}
-                  height={230}
+                  height={240}
                   chartConfig={chartConfig}
                   formatXLabel={(label) => this.formatX(label)}
                   getDotColor={(point) => getMarkRanks(point, isAuType)[1]}
+                  verticalLabelRotation={
+                    dataTerm.datasets[0].data.length > 12 ? 90 : 50
+                  }
+                  xLabelsOffset={-10}
                   bezier
                 />
                 :
@@ -281,7 +289,10 @@ const styles = StyleSheet.create({
   chartContainer: {
     flex: 1, 
     paddingTop: 40,
+    paddingBottom: 10,
+    overflow: "visible",
+  },
+  chartContainerLine: {
     marginLeft: -20,
-    overflow: "hidden",
   }
 });
