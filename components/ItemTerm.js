@@ -23,7 +23,7 @@ export default class ItemTerm extends React.Component {
         <TouchableRipple 
           onPress={()=>{}} 
           onLongPress={() => keyV !== "CurrentTerm" && this.setState({menuOpen: true})}
-          delayLongPress={10}
+          delayLongPress={200}
         >
           <Menu
             visible={this.state.menuOpen}
