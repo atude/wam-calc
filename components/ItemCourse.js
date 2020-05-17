@@ -49,7 +49,7 @@ export default class ItemCourse extends React.Component {
         <List.Accordion
           onPress={() => this.setState({accordionOpen: !accordionOpen})}
           title={course.name}
-          description={`${courseCompletion}% Complete | ${course.uoc} Credits`}
+          description={`${courseCompletion}% Complete | ${course.uoc} Units`}
           style={styles.listAccordion}
           left={props => 
           <View>

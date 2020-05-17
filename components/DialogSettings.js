@@ -124,7 +124,7 @@ export default class DialogSettings extends React.Component {
 
               <TextInput 
                 style={styles.textInputR}
-                label="Total Credits" 
+                label="Total Units" 
                 value={parseInt(dialogUoc)}
                 onChangeText={dialogUoc => {this.setState({dialogUoc})}}
                 mode="flat"

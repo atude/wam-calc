@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { Button, Text, TextInput, } from 'react-native-paper';
 import { signInEmail, createAccount } from '../firebase/firebaseFunctions';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import LoadingItem from '../components/LoadingItem';
 import Colors from '../constants/Colors';
 import loginIcon from '../assets/images/loginicon.png';
@@ -111,20 +110,6 @@ export default function LoginScreen(props) {
       <LoadingItem isLoading={isLoading}/>
       </View>
       }
-      <View style={styles.firebaseTextContainer}>
-        <View>
-          <Button disabled mode="text">
-            Powered by Firebase
-          </Button>
-        </View>
-        <View>
-          <MaterialCommunityIcons
-            name="firebase"
-            size={30}
-            color="#959595"
-          />
-        </View>
-      </View>
     </View>
   );
 };

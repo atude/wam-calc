@@ -1,6 +1,6 @@
 import React from 'react';
-import { List, Divider, Text, Subheading, IconButton, } from 'react-native-paper';
-import { StyleSheet, View, Picker, ScrollViewComponent} from 'react-native';
+import { List, Divider, Subheading, IconButton, } from 'react-native-paper';
+import { StyleSheet, View, Picker } from 'react-native';
 
 import ItemTerm from './ItemTerm.js';
 import Colors from '../constants/Colors.js';
@@ -60,6 +60,7 @@ export default class ItemPeriod extends React.Component {
 
   render() {
     const { terms, deleteHandler, calcWam, isAuType } = this.props;
+    const totalUoc = Object.values(terms).reduce((total, currTerm) => total + Object.values(currTerm).reduce((uocTotal, subject) => uocTotal + subject.uoc, 0), 0)
     let { filterMethod } = this.state;
 
     return (
@@ -83,6 +84,11 @@ export default class ItemPeriod extends React.Component {
             <Picker.Item label="Name" value="name"/>
           </Picker>
         </View>
+        <View style={styles.completedUnitsView}>
+          <Subheading style={styles.completedUnitsText}>
+            {totalUoc} Units
+          </Subheading>
+        </View>
 
         {filterMethod === "term" ?
           <View>
@@ -105,7 +111,7 @@ export default class ItemPeriod extends React.Component {
                 {Object.keys(terms).filter(key => key !== "CurrentTerm").sort().reverse().map((key, i) => (
                   <ItemTerm
                     calcWam={calcWam}
-                    key={`_${key}_${i}`}
+                    key={`_${key}_`}
                     terms={terms}
                     deleteHandler={deleteHandler}
                     keyV={key}
@@ -116,7 +122,7 @@ export default class ItemPeriod extends React.Component {
             }
           </View>
           :
-          <View style={styles.coursesFilteredContainer}>
+          <View>
             {this.getAllCoursesByFilter(terms, filterMethod).map((course, i) => (
               <ItemCourse
                 key={course + i}
@@ -140,9 +146,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     paddingBottom: 90,
   },
-  coursesFilteredContainer: {
-    paddingTop: 15,
-  },  
   filterButtons: {
     flex: 1,
     flexDirection: "row",
@@ -171,4 +174,13 @@ const styles = StyleSheet.create({
     flex: 0.5,
     color: "#fff",
   },
+  completedUnitsView: {
+    marginTop: 10,
+    marginBottom: -8,
+    paddingHorizontal: 16,
+  },  
+  completedUnitsText: {
+    color: Colors.tintColor,
+    fontSize: 14,
+  }
 });
