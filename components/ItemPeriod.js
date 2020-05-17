@@ -175,8 +175,8 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   completedUnitsView: {
-    marginTop: 10,
-    marginBottom: -8,
+    marginTop: 12,
+    marginBottom: -6,
     paddingHorizontal: 16,
   },  
   completedUnitsText: {
