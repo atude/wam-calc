@@ -12,7 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "version": "1.9.3",
+    "version": "1.9.4",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "updates": {
@@ -24,7 +24,7 @@
     "description": "A multi-purpose tool to track univerity progress",
     "android": {
       "package": "com.atude.mywam",
-      "versionCode": 22
+      "versionCode": 23
     }
   }
 }
