@@ -8,7 +8,7 @@ import {
   STORAGE_BUCKET,
   MESSAGE_SENDER_ID,
   APP_ID
-} from '../.env';
+} from '../env';
 
 console.log(PROJECT_ID);
 
